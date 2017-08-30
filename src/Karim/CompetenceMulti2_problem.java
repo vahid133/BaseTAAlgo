@@ -12,6 +12,7 @@ public class CompetenceMulti2_problem extends AbstractProblem{
 	}
 	
 	
+	
 	@Override
 	public Solution newSolution(){
 		Solution solution=new Solution(numberOfVariables, numberOfObjectives);
