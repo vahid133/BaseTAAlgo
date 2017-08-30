@@ -8,21 +8,20 @@ import org.moeaframework.problem.AbstractProblem;
 public class CompetenceMulti2_problem extends AbstractProblem{
 	
 	public CompetenceMulti2_problem(){
-		super(3,2);
+		super(GA_Problem_Parameter.Num_of_variables,GA_Problem_Parameter.Num_of_functions);
 	}
-	
 	
 	
 	@Override
 	public Solution newSolution(){
-		Solution solution=new Solution(numberOfVariables, numberOfObjectives);
+		Solution solution=new Solution(GA_Problem_Parameter.Num_of_variables,GA_Problem_Parameter.Num_of_functions);
 		for( int i=0;i<numberOfConstraints;i++){
 			solution.setVariable(i, new RealVariable(-0.5,0.5 ));
 		}
 		return solution;
-		
 	}
 		
+	
 	@Override 	
 	public void evaluate(Solution solution){
 		

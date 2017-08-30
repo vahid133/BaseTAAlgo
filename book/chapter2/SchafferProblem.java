@@ -11,17 +11,16 @@ public class SchafferProblem  extends AbstractProblem{
 	}
 	@Override
 	public void evaluate(Solution solution) {
-	double x = EncodingUtils.getReal(solution.getVariable(0));
-	
-	solution.setObjective(0, Math.pow(x, 2.0));
-	solution.setObjective(1, Math.pow(x - 2.0, 2.0));
+		double x = EncodingUtils.getReal(solution.getVariable(0));
+		solution.setObjective(0, Math.pow(x, 2.0));
+		solution.setObjective(1, Math.pow(x - 2.0, 2.0));
 	}
 	
 	@Override
 	public Solution newSolution() {
-	Solution solution = new Solution(1, 2);
-	solution.setVariable(0, EncodingUtils.newReal(-10.0, 10.0));
-	return solution;
+		Solution solution = new Solution(1, 2);
+		solution.setVariable(0, EncodingUtils.newReal(-10.0, 10.0));
+		return solution;
 	}
 	
 }
