@@ -1,8 +1,3 @@
-/Makefile
-/chapter2/
-/dtlz2.c
-/moeaframework.c
-/moeaframework.h
 /org/
 /overview.html
 /Example1.class
@@ -15,6 +10,5 @@
 /Example6$MyDTLZ2.class
 /Example6.class
 /Examples.class
-/Karim_algo/
-/CompetenceMulti2problem.class
 /Karim/
+/chapter2/

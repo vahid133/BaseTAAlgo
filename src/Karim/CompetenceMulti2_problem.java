@@ -15,8 +15,8 @@ public class CompetenceMulti2_problem extends AbstractProblem{
 	@Override
 	public Solution newSolution(){
 		Solution solution=new Solution(GA_Problem_Parameter.Num_of_variables,GA_Problem_Parameter.Num_of_functions);
-		for( int i=0;i<numberOfConstraints;i++){
-			solution.setVariable(i, new RealVariable(-0.5,0.5 ));
+		for( int i=0;i<GA_Problem_Parameter.Num_of_variables;i++){
+			solution.setVariable(i, new RealVariable(-0.5,0.5));
 		}
 		return solution;
 	}
