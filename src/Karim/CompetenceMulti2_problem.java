@@ -5,7 +5,7 @@ import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
 
-public class CompetenceMulti2_problem extends AbstractProblem{
+public class CompetenceMulti2_problem extends AbstractProblem {
 	
 	public CompetenceMulti2_problem(){
 		super(GA_Problem_Parameter.Num_of_variables,GA_Problem_Parameter.Num_of_functions);
@@ -29,7 +29,7 @@ public class CompetenceMulti2_problem extends AbstractProblem{
 		double f1 = 0.0;
 		double f2 = 0.0;
 		
-		for (int i = 0; i < numberOfVariables - 1; i++) {
+		for (int i = 0; i < GA_Problem_Parameter.Num_of_variables - 1; i++) {
 		
 		 f1 += -10.0 * Math.exp(-0.2 * Math.sqrt(
 		 Math.pow(x[i], 2.0) + Math.pow(x[i+1], 2.0)));
