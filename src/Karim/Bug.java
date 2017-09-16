@@ -9,10 +9,10 @@ public class Bug
 	int ID;
 	double competenceProfile[];
 	int manualDeveloperID;
-	
 	double totalEstimatedEffort;
 
-	HashMap< Zone, Double> BZone_Coefficient=new HashMap<Zone,Double>();
+	HashMap<Zone, Double> BZone_Coefficient=new HashMap<Zone,Double>();
+	
 	double startTime;
 	double endTime;
 	int algorithmicDeveloperAssignmentID=0;

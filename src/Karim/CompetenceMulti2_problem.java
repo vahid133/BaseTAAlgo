@@ -7,8 +7,12 @@ import org.moeaframework.problem.AbstractProblem;
 
 public class CompetenceMulti2_problem extends AbstractProblem {
 	
-	public CompetenceMulti2_problem(){
+	Bug[] bugs;
+	Developer[] developers;
+	public CompetenceMulti2_problem(Bug[] bugs ,Developer[] developers){
 		super(GA_Problem_Parameter.Num_of_variables,GA_Problem_Parameter.Num_of_functions);
+		this.bugs=bugs;
+		this.developers=developers;
 	}
 	
 	
@@ -24,14 +28,15 @@ public class CompetenceMulti2_problem extends AbstractProblem {
 	
 	@Override 	
 	public void evaluate(Solution solution){
-		
 		double[] x = EncodingUtils.getReal(solution);
 		double f1 = 0.0;
 		double f2 = 0.0;
 		
 		for (int i = 0; i < GA_Problem_Parameter.Num_of_variables - 1; i++) {
 		
-		 f1 += 0;
+			for(int j=0;j<bugs.length;j++){
+				
+			}
 		 }
 		
 		 for (int i = 0; i < numberOfVariables; i++) {
