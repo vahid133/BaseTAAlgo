@@ -1,15 +1,18 @@
 package Karim;
 
+import java.util.HashMap;
+
 public class Bug 
 {
-	
+	Bug[] DB;
 	int competenceProfileCount;
 	int ID;
 	double competenceProfile[];
 	int manualDeveloperID;
 	
 	double totalEstimatedEffort;
-	
+
+	HashMap< Zone, Double> BZone_Coefficient=new HashMap<Zone,Double>();
 	double startTime;
 	double endTime;
 	int algorithmicDeveloperAssignmentID=0;

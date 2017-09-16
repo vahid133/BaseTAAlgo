@@ -16,7 +16,7 @@ public class CompetenceMulti2_problem extends AbstractProblem {
 	public Solution newSolution(){
 		Solution solution=new Solution(GA_Problem_Parameter.Num_of_variables,GA_Problem_Parameter.Num_of_functions);
 		for( int i=0;i<GA_Problem_Parameter.Num_of_variables;i++){
-			solution.setVariable(i, new RealVariable(-0.5,0.5));
+			solution.setVariable(i, new RealVariable(GA_Problem_Parameter.startDevId,GA_Problem_Parameter.Num_of_Active_Developers));
 		}
 		return solution;
 	}
@@ -31,8 +31,7 @@ public class CompetenceMulti2_problem extends AbstractProblem {
 		
 		for (int i = 0; i < GA_Problem_Parameter.Num_of_variables - 1; i++) {
 		
-		 f1 += -10.0 * Math.exp(-0.2 * Math.sqrt(
-		 Math.pow(x[i], 2.0) + Math.pow(x[i+1], 2.0)));
+		 f1 += 0;
 		 }
 		
 		 for (int i = 0; i < numberOfVariables; i++) {
