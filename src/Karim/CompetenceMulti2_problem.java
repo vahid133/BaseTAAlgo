@@ -1,5 +1,11 @@
 package Karim;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
@@ -8,11 +14,11 @@ import org.moeaframework.problem.AbstractProblem;
 public class CompetenceMulti2_problem extends AbstractProblem {
 	
 	Bug[] bugs;
-	Developer[] developers;
+	ArrayList<Developer> developers;
 	public CompetenceMulti2_problem(Bug[] bugs ,Developer[] developers){
 		super(GA_Problem_Parameter.Num_of_variables,GA_Problem_Parameter.Num_of_functions);
 		this.bugs=bugs;
-		this.developers=developers;
+		this.developers= new ArrayList<Developer>(Arrays.asList(developers));
 	}
 	
 	
@@ -33,9 +39,8 @@ public class CompetenceMulti2_problem extends AbstractProblem {
 		double f2 = 0.0;
 		
 		for (int i = 0; i < GA_Problem_Parameter.Num_of_variables - 1; i++) {
-		
-			for(int j=0;j<bugs.length;j++){
-				
+			 for(Entry<Zone, Double>  zone:bugs[i].BZone_Coefficient.entrySet()){
+				f1+=fitnessCalc.totalTime(bugs[i],zone, developers.get(Integer.parseInt(solution.getVariable(i).toString())));
 			}
 		 }
 		
