@@ -42,14 +42,17 @@ public class CompetenceMulti2_problem extends AbstractProblem {
 			 for(Entry<Zone, Double>  zone:bugs[i].BZone_Coefficient.entrySet()){
 				f1+=fitnessCalc.totalTime(bugs[i],zone, developers.get(Integer.parseInt(solution.getVariable(i).toString())));
 			}
+			bugs[i].endTime=f1+bugs[i].startTime;
 		 }
 		
-		 for (int i = 0; i < numberOfVariables; i++) {
-		 f2 += Math.pow(Math.abs(x[i]), 0.8) +
-		 5.0 * Math.sin(Math.pow(x[i], 3.0));
+		 for (int i = 0; i < GA_Problem_Parameter.Num_of_variables-1; i++) {
+			 for(Entry<Zone, Double>  zone:bugs[i].BZone_Coefficient.entrySet()){
+					f2+=fitnessCalc.totalTime(bugs[i],zone, developers.get(Integer.parseInt(solution.getVariable(i).toString())))
+							*developers.get(Integer.parseInt(solution.getVariable(i).toString())).getDZone_Wage().get(zone.getKey());
+				}
 		 }
 		
-		 solution.setObjective(0, f1);
+		solution.setObjective(0, f1);
 		solution.setObjective(1, f2);
 		 }
 		
