@@ -9,6 +9,5 @@ public class Zone {
 	public Zone(int id, String name){
 		this.zId=id;
 		this.zName=name;
-	}
-		
+	}		
 }
