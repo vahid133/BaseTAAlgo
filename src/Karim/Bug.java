@@ -1,10 +1,11 @@
 package Karim;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Bug 
 {
-	Bug[] DB;
+	ArrayList<Bug> DB=new ArrayList<Bug>();
 	int competenceProfileCount;
 	int ID;
 	double competenceProfile[];

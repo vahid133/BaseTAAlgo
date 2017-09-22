@@ -10,8 +10,8 @@ public class Developer
 	private double competenceProfile[];
 	private int developerNextAvailableHour;
 	private int totalAssignedBugs;
-	
-	private HashMap< Zone, Double> DZone_Coefficient=new HashMap<Zone,Double>();
+	public HashMap< Zone, Double> DZone_Wage=new HashMap<Zone,Double>();
+	public HashMap< Zone, Double> DZone_Coefficient=new HashMap<Zone,Double>();
 	
 	public int getTotalAssignedBugs() {
 		return totalAssignedBugs;
@@ -53,6 +53,14 @@ public class Developer
 	}
 	public void setCompetenceProfile(double[] competenceProfile) {
 		this.competenceProfile = competenceProfile;
+	}
+	
+	public HashMap< Zone, Double> getDZone_Coefficient(){
+		return DZone_Coefficient;
+	}
+	
+	public HashMap< Zone, Double> getDZone_Wage(){
+		return DZone_Wage;
 	}
 	
 }

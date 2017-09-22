@@ -9,11 +9,12 @@ import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
 
-public class CompetenceMulti2_problem extends AbstractProblem {
-	
+import com.sun.org.apache.xpath.internal.operations.Variable;
+
+public class InformationDifussion extends AbstractProblem{
 	Bug[] bugs;
 	ArrayList<Developer> developers;
-	public CompetenceMulti2_problem(Bug[] bugs ,Developer[] developers){
+	public InformationDifussion(Bug[] bugs ,Developer[] developers){
 		super(GA_Problem_Parameter.Num_of_variables,GA_Problem_Parameter.Num_of_functions);
 		this.bugs=bugs;
 		this.developers= new ArrayList<Developer>(Arrays.asList(developers));
@@ -27,7 +28,7 @@ public class CompetenceMulti2_problem extends AbstractProblem {
 		for( int i=0;i<GA_Problem_Parameter.Num_of_variables;i++){
 			for(Entry<Zone, Double>  zone:bugs[i].BZone_Coefficient.entrySet()){
 				RealVariable rv=new RealVariable(GA_Problem_Parameter.startDevId,GA_Problem_Parameter.startDevId);
-				rv.setValue(GA_Problem_Parameter.getRandomDevId());
+				rv.setValue(GA_Problem_Parameter.getDevId());
 				solution.setVariable(j,rv);
 				j++;
 			}
@@ -40,7 +41,9 @@ public class CompetenceMulti2_problem extends AbstractProblem {
 	public void evaluate(Solution solution){
 		double[] x = EncodingUtils.getReal(solution);
 		double f1 = 0.0;
-		double f2 = 0.0;
+		double f2=0.0;
+		double f2_1 = 0.0;
+		double f2_2 = 0.0;
 		
 		for (int i = 0; i < GA_Problem_Parameter.Num_of_variables - 1; i++) {
 			 for(Entry<Zone, Double>  zone:bugs[i].BZone_Coefficient.entrySet()){
@@ -49,17 +52,29 @@ public class CompetenceMulti2_problem extends AbstractProblem {
 			bugs[i].endTime=f1+bugs[i].startTime;
 		 }
 		
+		//compute zone dissimilarity
 		 for (int i = 0; i < GA_Problem_Parameter.Num_of_variables-1; i++) {
+			 int j=0;
 			 for(Entry<Zone, Double>  zone:bugs[i].BZone_Coefficient.entrySet()){
-					f2+=fitnessCalc.totalTime(bugs[i],zone, developers.get(Integer.parseInt(solution.getVariable(i).toString())))
-							*developers.get(Integer.parseInt(solution.getVariable(i).toString())).getDZone_Wage().get(zone.getKey());
-				}
+					for(int k=j;k<bugs[i].BZone_Coefficient.size();k++)
+						f2_1+=fitnessCalc.getSimDev(developers.get(Integer.parseInt(solution.getVariable(j).toString())),
+												  developers.get(Integer.parseInt(solution.getVariable(k).toString())));
+			j++;
+			 }
 		 }
-		
+		//compute team similarity
+		 for (int i = 0; i < GA_Problem_Parameter.Num_of_variables-1; i++) {
+			 
+			 for(Entry<Zone, Double>  zone:bugs[i].BZone_Coefficient.entrySet()){
+				 f2_2 +=fitnessCalc.getSimBug( developers.get(Integer.parseInt(solution.getVariable(i).toString())), bugs[i]);
+			
+			 }
+		 f2=f2_1+f2_2;
+		 }
+		 
+		 
 		solution.setObjective(0, f1);
 		solution.setObjective(1, f2);
 		 }
-		
-	
-}
 
+}
