@@ -8,12 +8,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Scanner;
+import org.moeaframework.Executor;
+import org.moeaframework.core.NondominatedPopulation;
+import org.moeaframework.core.Solution;
+
+import org.moeaframework.core.NondominatedPopulation;
 
 
 public class Test1 {
 
 	public static void main(String[] args) throws FileNotFoundException{
 		Initialization();
+		Assigning();
+		writeResult();
+		afterRoundPurning();
 		
 		
 		
@@ -114,11 +122,33 @@ public class Test1 {
 		GA_Problem_Parameter.Num_of_variables=bugs.size();
 		for(Entry<Integer, Developer> dev:developers.entrySet())
 			GA_Problem_Parameter.DevList.add(dev.getKey());
+		//GA_Problem_Parameter.
 		
 	}
 	
 	//assigning to developer
 	public static void Assigning(){
+		NondominatedPopulation result_Karim=new Executor().withProblemClass(CompetenceMulti2_problem.class).withAlgorithm("NSGAII")
+				.withMaxEvaluations(500).withProperty("populationSize",GA_Problem_Parameter.population)
+				.withProperty("sbx.rate", GA_Problem_Parameter.sbx_rate).withProperty("sbx.distributionIndex", GA_Problem_Parameter.sbx_distribution_index)
+				.withProperty("pm.rate", GA_Problem_Parameter.pm_rate).withProperty("pm.distributionIndex", GA_Problem_Parameter.pm_distribution_index)
+				.run();
 		
+		
+	    NondominatedPopulation result_me=new Executor().withProblemClass(InformationDifussion.class).withAlgorithm("NSGAII")
+				.withMaxEvaluations(500).withProperty("populationSize",GA_Problem_Parameter.population)
+				.withProperty("sbx.rate", GA_Problem_Parameter.sbx_rate).withProperty("sbx.distributionIndex", GA_Problem_Parameter.sbx_distribution_index)
+				.withProperty("pm.rate", GA_Problem_Parameter.pm_rate).withProperty("pm.distributionIndex", GA_Problem_Parameter.pm_distribution_index)
+				.run();
+	    
+	    
+	}
+	
+	public static void writeResult(){
+		//write results to CSV for each round
+	}
+	
+	public static void afterRoundPurning(){
+		//
 	}
 }

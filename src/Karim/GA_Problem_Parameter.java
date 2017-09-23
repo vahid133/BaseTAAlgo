@@ -11,6 +11,11 @@ public class GA_Problem_Parameter {
 	static int Num_of_Zones;
 	//set GA parameters
 	static int population;
+	static double sbx_rate;
+	static double sbx_distribution_index;
+	static double pm_rate;
+	static double pm_distribution_index;
+	
 	public static final int startDevId=1;
 	public static ArrayList<Integer> DevList=new ArrayList<Integer>();
 	
