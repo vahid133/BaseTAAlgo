@@ -2,6 +2,7 @@ package Karim;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import org.moeaframework.core.Solution;
@@ -26,7 +27,7 @@ public class InformationDifussion extends AbstractProblem{
 		Solution solution=new Solution(GA_Problem_Parameter.Num_of_variables,GA_Problem_Parameter.Num_of_functions);
 		int j=0;
 		for( int i=0;i<GA_Problem_Parameter.Num_of_variables;i++){
-			for(Entry<Zone, Double>  zone:bugs[i].BZone_Coefficient.entrySet()){
+			for(Map.Entry<Zone, Double>  zone:bugs[i].BZone_Coefficient.entrySet()){
 				RealVariable rv=new RealVariable(GA_Problem_Parameter.startDevId,GA_Problem_Parameter.startDevId);
 				rv.setValue(GA_Problem_Parameter.getDevId());
 				solution.setVariable(j,rv);
@@ -46,7 +47,7 @@ public class InformationDifussion extends AbstractProblem{
 		double f2_2 = 0.0;
 		
 		for (int i = 0; i < GA_Problem_Parameter.Num_of_variables - 1; i++) {
-			 for(Entry<Zone, Double>  zone:bugs[i].BZone_Coefficient.entrySet()){
+			 for(Map.Entry<Zone, Double>  zone:bugs[i].BZone_Coefficient.entrySet()){
 				f1+=fitnessCalc.totalTime(bugs[i],zone, developers.get(Integer.parseInt(solution.getVariable(i).toString())));
 			}
 			bugs[i].endTime=f1+bugs[i].startTime;
@@ -55,7 +56,7 @@ public class InformationDifussion extends AbstractProblem{
 		//compute zone dissimilarity
 		 for (int i = 0; i < GA_Problem_Parameter.Num_of_variables-1; i++) {
 			 int j=0;
-			 for(Entry<Zone, Double>  zone:bugs[i].BZone_Coefficient.entrySet()){
+			 for(Map.Entry<Zone, Double>  zone:bugs[i].BZone_Coefficient.entrySet()){
 					for(int k=j;k<bugs[i].BZone_Coefficient.size();k++)
 						f2_1+=fitnessCalc.getSimDev(developers.get(Integer.parseInt(solution.getVariable(j).toString())),
 												  developers.get(Integer.parseInt(solution.getVariable(k).toString())));
@@ -65,7 +66,7 @@ public class InformationDifussion extends AbstractProblem{
 		//compute team similarity
 		 for (int i = 0; i < GA_Problem_Parameter.Num_of_variables-1; i++) {
 			 
-			 for(Entry<Zone, Double>  zone:bugs[i].BZone_Coefficient.entrySet()){
+			 for(Map.Entry<Zone, Double>  zone:bugs[i].BZone_Coefficient.entrySet()){
 				 f2_2 +=fitnessCalc.getSimBug( developers.get(Integer.parseInt(solution.getVariable(i).toString())), bugs[i]);
 			
 			 }

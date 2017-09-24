@@ -2,6 +2,7 @@ package Karim;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import org.moeaframework.core.Solution;
@@ -25,7 +26,7 @@ public class CompetenceMulti2_problem extends AbstractProblem {
 		Solution solution=new Solution(GA_Problem_Parameter.Num_of_variables,GA_Problem_Parameter.Num_of_functions);
 		int j=0;
 		for( int i=0;i<GA_Problem_Parameter.Num_of_variables;i++){
-			for(Entry<Zone, Double>  zone:bugs[i].BZone_Coefficient.entrySet()){
+			for(Map.Entry<Zone, Double>  zone:bugs[i].BZone_Coefficient.entrySet()){
 				RealVariable rv=new RealVariable(GA_Problem_Parameter.startDevId,GA_Problem_Parameter.startDevId);
 				rv.setValue(GA_Problem_Parameter.getRandomDevId());
 				solution.setVariable(j,rv);
@@ -43,14 +44,14 @@ public class CompetenceMulti2_problem extends AbstractProblem {
 		double f2 = 0.0;
 		
 		for (int i = 0; i < GA_Problem_Parameter.Num_of_variables - 1; i++) {
-			 for(Entry<Zone, Double>  zone:bugs[i].BZone_Coefficient.entrySet()){
+			 for(Map.Entry<Zone, Double>  zone:bugs[i].BZone_Coefficient.entrySet()){
 				f1+=fitnessCalc.totalTime(bugs[i],zone, developers.get(Integer.parseInt(solution.getVariable(i).toString())));
 			}
 			bugs[i].endTime=f1+bugs[i].startTime;
 		 }
 		
 		 for (int i = 0; i < GA_Problem_Parameter.Num_of_variables-1; i++) {
-			 for(Entry<Zone, Double>  zone:bugs[i].BZone_Coefficient.entrySet()){
+			 for(Map.Entry<Zone, Double>  zone:bugs[i].BZone_Coefficient.entrySet()){
 					f2+=fitnessCalc.totalTime(bugs[i],zone, developers.get(Integer.parseInt(solution.getVariable(i).toString())))
 							*developers.get(Integer.parseInt(solution.getVariable(i).toString())).getDZone_Wage().get(zone.getKey());
 				}

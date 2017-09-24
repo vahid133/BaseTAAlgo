@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.LineNumberReader;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Scanner;
 
@@ -15,13 +16,15 @@ import org.moeaframework.core.Solution;
 
 
 public class Test1 {
-
+	public static HashMap<Integer,Developer> developers=new HashMap<Integer,Developer>();
+	static Solution solution=null;
 	public static void main(String[] args) throws FileNotFoundException{
 		int roundNum=5;
 		for(int i=1;i<=roundNum;i++){
 		Initialization(i);
 		NondominatedPopulation[] results = null; 
 		results=Assigning(results);
+		solution=results[1].get(results[1].size()/2);
 		writeResult(i,results);
 		afterRoundUpdating();
 		}
@@ -31,7 +34,6 @@ public class Test1 {
 		HashMap<String , Zone> columns=new HashMap<String, Zone>();
 		
 		//initialize developers
-		HashMap<Integer,Developer> developers=new HashMap<Integer,Developer>();
 		
 		Developer developer = null;
 		Scanner sc=new Scanner(System.in);
@@ -65,6 +67,9 @@ public class Test1 {
 			developers.put(developer.getID(), developer);
 		}
 		sc.close();
+		/*assign GA_Problem_Parameter DevList*/
+		for(Map.Entry<Integer, Developer> dev:developers.entrySet())
+			GA_Problem_Parameter.DevList.add(dev.getKey());
 		
 		//initialize bugs: consider dependent bugs
 		
@@ -182,6 +187,28 @@ public class Test1 {
 	public static void afterRoundUpdating(){
 		//update developers' zone
 		
+		//remove 2 top developers
 		
 	}
+	public static void removeDevelopers(){
+		int devId=-1;
+		double devScore=-1.0;
+		//select dev with the max of sum of competencies 
+		for(Map.Entry<Integer, Developer> dev:developers.entrySet()){
+			if(devCompetenciesMeasurement(dev.getValue())>devScore){
+				devId=dev.getKey();
+				devScore=devCompetenciesMeasurement(dev.getValue());
+			}
+				
+		}
+	
+	}
+	
+	public static double devCompetenciesMeasurement(Developer dev){
+		double CumulativeSkillLevel=0.0;
+		for(Map.Entry<Zone,Double> zone:dev.getDZone_Coefficient().entrySet())
+			CumulativeSkillLevel+=zone.getValue();
+		return CumulativeSkillLevel;
+	}
+	
 }
