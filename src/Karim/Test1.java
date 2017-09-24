@@ -1,8 +1,10 @@
 package Karim;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.PrintWriter;
 import java.util.HashMap;
@@ -17,8 +19,9 @@ import org.moeaframework.core.Solution;
 
 public class Test1 {
 	public static HashMap<Integer,Developer> developers=new HashMap<Integer,Developer>();
+	static HashMap<Integer,Bug> bugs=new HashMap<Integer,Bug>();
 	static Solution solution=null;
-	public static void main(String[] args) throws FileNotFoundException{
+	public static void main(String[] args) throws IOException{
 		int roundNum=5;
 		for(int i=1;i<=roundNum;i++){
 		Initialization(i);
@@ -26,90 +29,122 @@ public class Test1 {
 		results=Assigning(results);
 		solution=results[1].get(results[1].size()/2);
 		writeResult(i,results);
-		afterRoundUpdating();
+		afterRoundUpdating(solution);
 		}
 	}
 	
-	public static void Initialization( int roundNum) throws FileNotFoundException{
-		HashMap<String , Zone> columns=new HashMap<String, Zone>();
+	public static void Initialization( int roundNum) throws IOException{
+		HashMap<Integer , Zone> columns=new HashMap<Integer, Zone>();
+		
+		
+		
+		
 		
 		//initialize developers
-		
+		System.out.println("enter the developr files");
 		Developer developer = null;
 		Scanner sc=new Scanner(System.in);
+		
 		sc=new Scanner(new File(sc.nextLine()));
 		int i=0;
 		int j=0;
 		while(sc.hasNextLine()){
-			if(i!=0){
-					for(String s:sc.next().split(" ")){
+			if(i==0){
+				String[] items=sc.nextLine().split("\t",-1);
+					for(int k=0;k<items.length;k++){
 						if(j!=0){
-						columns.put(Integer.toString(j),new Zone(j, s));
+						Zone zone=new Zone(j, items[k]);
+						columns.put(j,zone);
 						}
 						j++;
 					}
-				
 			}
 			else{
-				for(String s:sc.next().split(" ")){
+				String[] items=sc.nextLine().split("\t",-1);
+				for(int k=0;k<items.length;k++){
 					if(j!=0){
-						developer.DZone_Coefficient.put(columns.get(s), Double.parseDouble(s));
+						developer.DZone_Coefficient.put(columns.get(j), Double.parseDouble(items[k]));
+						//System.out.println(columns.get(j));
+						
 					}
 					else{
 						developer=new Developer(0);
-						developer.setID(Integer.parseInt(s));
+						developer.setID(i);
 					}
 					j++;
 				}
-				i++;
-				j=0;
-			}
 			developers.put(developer.getID(), developer);
+			}
+			i++;
+			j=0;
 		}
 		sc.close();
 		/*assign GA_Problem_Parameter DevList*/
-		for(Map.Entry<Integer, Developer> dev:developers.entrySet())
+		for(Map.Entry<Integer, Developer> dev:developers.entrySet()){
 			GA_Problem_Parameter.DevList.add(dev.getKey());
+			System.out.println(dev.getValue().DZone_Coefficient.values());
+			System.out.println(dev.getValue().DZone_Coefficient.keySet());
+		}
+		System.out.println(columns.values());
 		
-		//initialize bugs: consider dependent bugs
+		
+		
+		
+		
+		
+		
+		
 		
 		/*generate bug objects*/
-		HashMap<Integer,Bug> bugs=new HashMap<Integer,Bug>();
+		System.out.println("enter the bugs files");
 		Bug bug=null;
 		sc=new Scanner(System.in);
-		for(File fileEntry:new File(sc.next()).listFiles() ){
-			sc=new Scanner(fileEntry);
-			LineNumberReader lnr=new LineNumberReader(new FileReader(fileEntry));
-			int numOfBugs=lnr.getLineNumber();
-			int n=numOfBugs*roundNum;
-			while(sc.hasNextLine() && n>=numOfBugs/5 && n<2*(numOfBugs/5) ){
-				n++;
-				if(i!=0){
-						for(String s:sc.next().split(" ")){
+		for(File fileEntry:new File(sc.nextLine()).listFiles() ){
+
+			sc=new Scanner(new File(fileEntry.toURI()));
+			BufferedReader reader = new BufferedReader(new FileReader(new File(fileEntry.toURI())));
+			int lines = 0;
+			while (reader.readLine() != null) lines++;
+				reader.close();
+			int numOfBugs=lines;
+			int n=0;
+			 i=0;
+			 j=0;
+			while(sc.hasNextLine() ){
+				if( n<(numOfBugs/5)*(roundNum+1) && n>=((numOfBugs/5)*roundNum)+1){
+					if(i==0){
+
+						String[] items=sc.nextLine().split("\t",-1);
+							for(int k=0;k<items.length;k++){
+								if(j!=0){
+									Zone zone=new Zone(j, items[k]);
+									columns.put(j,zone);
+								}
+								j++;
+							}	
+					}
+					else{
+						String[] items=sc.nextLine().split("\t",-1);
+						for(int k=0;k<items.length;k++){
 							if(j!=0){
-							columns.put(Integer.toString(j),new Zone(j, s));
+								bug.BZone_Coefficient.put(columns.get(j), Double.parseDouble(items[k]));
+							}
+							else{
+								bug=new Bug(0);
+								bug.setID(j);
 							}
 							j++;
-						}	
-				}
-				else{
-					for(String s:sc.next().split(" ")){
-						if(j!=0){
-							bug.BZone_Coefficient.put(columns.get(s), Double.parseDouble(s));
 						}
-						else{
-							bug=new Bug(0);
-							bug.setID(Integer.parseInt(s));
-						}
-						j++;
 					}
 					i++;
 					j=0;
+					bugs.put(bug.getID(), bug);
 				}
-				bugs.put(bug.getID(), bug);
+				n++;
 			}
 		
 		/*set bug dependencies*/
+		System.out.println("enter the bug dependency files");
 		Scanner sc1=new Scanner(System.in);
 		sc=new Scanner(new File(sc1.next()));
 		String[] columns_bug=null;
@@ -184,9 +219,15 @@ public class Test1 {
 		
 	}
 	
-	public static void afterRoundUpdating(){
+	public static void afterRoundUpdating(Solution solution){
 		//update developers' zone
-		
+		int variableNum=0;
+		for(Map.Entry<Integer, Bug> bug:bugs.entrySet()){
+			for(Map.Entry<Zone, Double> zone:bug.getValue().BZone_Coefficient.entrySet()){
+				updateDeveloperSkills(solution.getVariable(variableNum).toString(),zone);
+				variableNum++;
+			}
+		}
 		//remove 2 top developers
 		
 	}
@@ -199,7 +240,13 @@ public class Test1 {
 				devId=dev.getKey();
 				devScore=devCompetenciesMeasurement(dev.getValue());
 			}
-				
+		}
+		try{
+			
+		GA_Problem_Parameter.DevList.remove(devId);
+		}
+		catch(Exception e){
+			e.printStackTrace();
 		}
 	
 	}
@@ -209,6 +256,13 @@ public class Test1 {
 		for(Map.Entry<Zone,Double> zone:dev.getDZone_Coefficient().entrySet())
 			CumulativeSkillLevel+=zone.getValue();
 		return CumulativeSkillLevel;
+	}
+	
+	public static void updateDeveloperSkills(String dev, Map.Entry<Zone, Double> zone){
+		for(Map.Entry<Zone, Double> devZone:developers.get(Integer.parseInt(dev)).DZone_Coefficient.entrySet()){
+			if(devZone.getKey().zId==zone.getKey().zId)
+				developers.get(Integer.parseInt(dev)).DZone_Coefficient.put(devZone.getKey(),devZone.getValue()+zone.getValue());
+		}
 	}
 	
 }

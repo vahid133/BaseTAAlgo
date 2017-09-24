@@ -1,8 +1,8 @@
 package Karim;
 
 public class Zone {
-	private int zId;
-	private String zName;
+	public int zId;
+	public String zName;
 	
 	public Zone(int id, String name){
 		this.zId=id;
