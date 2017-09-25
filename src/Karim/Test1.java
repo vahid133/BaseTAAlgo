@@ -10,6 +10,7 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import org.moeaframework.Executor;
@@ -33,7 +34,7 @@ public class Test1 {
 		}
 	}
 	
-	public static void Initialization( int roundNum) throws IOException{
+	public static void Initialization( int roundNum) throws IOException,NoSuchElementException{
 		HashMap<Integer , Zone> columns=new HashMap<Integer, Zone>();
 		
 		
@@ -78,7 +79,10 @@ public class Test1 {
 			i++;
 			j=0;
 		}
-		sc.close();
+		
+		
+		
+		
 		/*assign GA_Problem_Parameter DevList*/
 		for(Map.Entry<Integer, Developer> dev:developers.entrySet()){
 			GA_Problem_Parameter.DevList.add(dev.getKey());
@@ -95,28 +99,33 @@ public class Test1 {
 		
 		
 		
+		
+		
 		/*generate bug objects*/
 		System.out.println("enter the bugs files");
 		Bug bug=null;
 		sc=new Scanner(System.in);
-		for(File fileEntry:new File(sc.nextLine()).listFiles() ){
-
-			sc=new Scanner(new File(fileEntry.toURI()));
+		int n=0;
+		Scanner sc1=null;
+		for(File fileEntry:new File(sc.nextLine()).listFiles()){
+			System.out.println(fileEntry);
+			sc1=new Scanner(new File(fileEntry.toURI()));
 			BufferedReader reader = new BufferedReader(new FileReader(new File(fileEntry.toURI())));
 			int lines = 0;
 			while (reader.readLine() != null) lines++;
-				reader.close();
+			reader.close();
 			int numOfBugs=lines;
-			int n=0;
-			 i=0;
-			 j=0;
-			while(sc.hasNextLine() ){
-				if( n<(numOfBugs/5)*(roundNum+1) && n>=((numOfBugs/5)*roundNum)+1){
+			i=0;
+			j=0;
+			int t=0;
+			n=0;
+			while(sc1.hasNextLine() ){
+				if( n<(numOfBugs/5)*(roundNum) && n>=((numOfBugs/5)*(roundNum-1))){
+					
 					if(i==0){
-
-						String[] items=sc.nextLine().split("\t",-1);
+						String[] items=sc1.nextLine().split("\t",-1);
 							for(int k=0;k<items.length;k++){
-								if(j!=0){
+								if(j>2){
 									Zone zone=new Zone(j, items[k]);
 									columns.put(j,zone);
 								}
@@ -124,45 +133,70 @@ public class Test1 {
 							}	
 					}
 					else{
-						String[] items=sc.nextLine().split("\t",-1);
+						String[] items=sc1.nextLine().split("\t",-1);
 						for(int k=0;k<items.length;k++){
-							if(j!=0){
+							if(j>2){
 								bug.BZone_Coefficient.put(columns.get(j), Double.parseDouble(items[k]));
+								
 							}
-							else{
+							else if(j==0){
 								bug=new Bug(0);
-								bug.setID(j);
+								bug.setID(Integer.parseInt(items[k]));
 							}
 							j++;
 						}
+					bugs.put(bug.getID(), bug);
+					System.out.println(bug.ID+"----"+bug.BZone_Coefficient.values());
 					}
 					i++;
 					j=0;
-					bugs.put(bug.getID(), bug);
+				}
+				else{
+					sc1.nextLine();
 				}
 				n++;
 			}
+		n=0;
+		}
 		
+					
 		/*set bug dependencies*/
 		System.out.println("enter the bug dependency files");
-		Scanner sc1=new Scanner(System.in);
-		sc=new Scanner(new File(sc1.next()));
+		sc=new Scanner(System.in);
 		String[] columns_bug=null;
-		i=0;
-		while(sc1.hasNextLine()){
-			columns_bug=sc1.next().split(",");
-			for(int k=0;k<columns_bug.length-1;k++){
-				if(k==1 && columns_bug[k]!=""){
-				  bugs.get(columns_bug[k-1]).DB.add(bugs.get(k));
-				}
-				j++;
-			}
-			sc1.close();
+		for(File fileEntry:new File(sc.nextLine()).listFiles()){
 			
-		}
+			sc1=new Scanner(new File(fileEntry.toURI()));
+
+			//System.out.println(fileEntry.toURI());
+
+			i=0;
+			while(sc1.hasNextLine()){
+				System.out.println(i);
+				if(i>0){
+					columns_bug=sc1.nextLine().split(",");
+					//for(int h=0;h<columns_bug.length;h++)
+						//System.out.println(columns_bug[h]);
+					for(int k=0;k<columns_bug.length-1;k++){
+						if(k==1 && columns_bug[k]!=""){
+							System.out.println(bugs.keySet());
+							System.out.println(columns_bug[k-1]);
+							System.out.println(bug.ID+"------"+columns_bug[k-1]);
+							bugs.get(columns_bug[k-1]).DB.add(bugs.get(k));
+						}
+				
+					}
+					j++;
+				}
+				i++;
+				sc1.nextLine();
+			}
 		}
 		
 		
+		
+		sc1.close();
+		sc.close();
 		/* set competency dependencies*/
 		
 		
@@ -172,6 +206,8 @@ public class Test1 {
 		for(Entry<Integer, Developer> dev:developers.entrySet())
 			GA_Problem_Parameter.DevList.add(dev.getKey());
 		//GA_Problem_Parameter.
+		
+		
 		
 	}
 	
