@@ -16,6 +16,7 @@ import java.util.Scanner;
 import org.moeaframework.Executor;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.variable.RealVariable;
 
 
 public class Test1 {
@@ -172,28 +173,33 @@ public class Test1 {
 
 			i=0;
 			while(sc1.hasNextLine()){
-				System.out.println(i);
 				if(i>0){
 					columns_bug=sc1.nextLine().split(",");
 					//for(int h=0;h<columns_bug.length;h++)
 						//System.out.println(columns_bug[h]);
 					for(int k=0;k<columns_bug.length-1;k++){
-						if(k==1 && columns_bug[k]!=""){
-							System.out.println(bugs.keySet());
-							System.out.println(columns_bug[k-1]);
-							System.out.println(bug.ID+"------"+columns_bug[k-1]);
+						/*need to be check the existence of the item in bugs set-----------------------------------------------*/
+						if(k==1 && columns_bug[k].toString().length()>1 && columns_bug[k]!=null ){
+							//System.out.println(columns_bug[k-1]);
+							try{
+							System.out.println(bugs.get(columns_bug[k-1]).ID);
 							bugs.get(columns_bug[k-1]).DB.add(bugs.get(k));
+							}
+							catch(NullPointerException e){
+								
+							}
 						}
 				
 					}
 					j++;
 				}
+				else{
+
+					sc1.nextLine();
+				}
 				i++;
-				sc1.nextLine();
 			}
 		}
-		
-		
 		
 		sc1.close();
 		sc.close();
@@ -203,12 +209,20 @@ public class Test1 {
 		//initialize GA parameters
 		
 		GA_Problem_Parameter.Num_of_variables=bugs.size();
-		for(Entry<Integer, Developer> dev:developers.entrySet())
+		for(Entry<Integer, Developer> dev:developers.entrySet()){
 			GA_Problem_Parameter.DevList.add(dev.getKey());
-		//GA_Problem_Parameter.
-		
-		
-		
+			System.out.println(dev.getKey());
+		}
+		//GA_Problem_Parameter
+		GA_Problem_Parameter.Num_of_Bugs=bugs.size();
+		GA_Problem_Parameter.Num_of_Active_Developers=developers.size();
+		GA_Problem_Parameter.Num_of_functions=2;
+		GA_Problem_Parameter.Num_of_variables=0;
+		for(Entry<Integer, Bug>  b:bugs.entrySet()){
+			for(Map.Entry<Zone, Double>  zone:b.getValue().BZone_Coefficient.entrySet()){
+				GA_Problem_Parameter.Num_of_variables++;
+			}
+			}
 	}
 	
 	//assigning to developer
