@@ -15,8 +15,12 @@ public class GA_Problem_Parameter {
 	static double sbx_distribution_index;
 	static double pm_rate;
 	static double pm_distribution_index;
-	
+	//
+	static Bug[] bugs;
+	static ArrayList<Developer> developers;;
 	public static final int startDevId=1;
+	public static final int endDevId=20;
+	
 	public static ArrayList<Integer> DevList=new ArrayList<Integer>();
 	
 	public void setNum_of_Variables(){

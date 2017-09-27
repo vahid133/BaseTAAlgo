@@ -223,6 +223,8 @@ public class Test1 {
 				GA_Problem_Parameter.Num_of_variables++;
 			}
 			}
+		GA_Problem_Parameter.population=100;
+		
 	}
 	
 	//assigning to developer
