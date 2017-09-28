@@ -7,6 +7,8 @@ public class fitnessCalc {
 
 public static double totalTime(Bug bug, Entry<Zone, Double> zone,
 		Developer developer) {
+	
+	System.out.println(developer.getID()+"------"+bug.ID+"-----------"+zone.getKey());
 	//set startTime
 	for(int j=0;j<bug.DB.size();j++){
 		if(bug.endTime>bug.startTime)

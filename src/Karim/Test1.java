@@ -213,6 +213,15 @@ public class Test1 {
 			GA_Problem_Parameter.DevList.add(dev.getKey());
 			System.out.println(dev.getKey());
 		}
+		GA_Problem_Parameter.developers=developers;
+		
+		int b_index=0;
+		GA_Problem_Parameter.bugs=new Bug[bugs.size()];
+		for(Entry<Integer, Bug> b2:bugs.entrySet()){
+			GA_Problem_Parameter.bugs[b_index]=b2.getValue();
+			b_index++;
+		}
+		
 		//GA_Problem_Parameter
 		GA_Problem_Parameter.Num_of_Bugs=bugs.size();
 		GA_Problem_Parameter.Num_of_Active_Developers=developers.size();

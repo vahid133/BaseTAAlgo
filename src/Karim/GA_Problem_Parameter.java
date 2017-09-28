@@ -1,6 +1,7 @@
 package Karim;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 public class GA_Problem_Parameter {
@@ -17,7 +18,7 @@ public class GA_Problem_Parameter {
 	static double pm_distribution_index;
 	//
 	static Bug[] bugs;
-	static ArrayList<Developer> developers;;
+	static HashMap<Integer,Developer> developers;
 	public static final int startDevId=1;
 	public static final int endDevId=20;
 	
