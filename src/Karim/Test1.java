@@ -27,7 +27,7 @@ public class Test1 {
 		int roundNum=5;
 		for(int i=1;i<=roundNum;i++){
 		Initialization(i);
-		NondominatedPopulation[] results = null; 
+		NondominatedPopulation[] results = new NondominatedPopulation[2]; 
 		results=Assigning(results);
 		solution=results[1].get(results[1].size()/2);
 		writeResult(i,results);
@@ -38,24 +38,28 @@ public class Test1 {
 	public static void Initialization( int roundNum) throws IOException,NoSuchElementException{
 		HashMap<Integer , Zone> columns=new HashMap<Integer, Zone>();
 		
-		
+		Project project=new Project();
 		
 		
 		
 		//initialize developers
-		System.out.println("enter the developr files");
+		System.out.println("enter the developrs file");
 		Developer developer = null;
 		Scanner sc=new Scanner(System.in);
-		
 		sc=new Scanner(new File(sc.nextLine()));
+		System.out.println("enter the devlopers wage file");
+		Scanner scan=new Scanner(System.in);
+		scan=new Scanner(new File(scan.nextLine()));
 		int i=0;
 		int j=0;
-		while(sc.hasNextLine()){
+		while(sc.hasNextLine() && scan.hasNextLine()){
 			if(i==0){
 				String[] items=sc.nextLine().split("\t",-1);
+				scan.nextLine();
 					for(int k=0;k<items.length;k++){
 						if(j!=0){
 						Zone zone=new Zone(j, items[k]);
+						project.zones.put(j, zone);
 						columns.put(j,zone);
 						}
 						j++;
@@ -63,11 +67,14 @@ public class Test1 {
 			}
 			else{
 				String[] items=sc.nextLine().split("\t",-1);
+				String[] wage_items=scan.nextLine().split("\t",-1);
 				for(int k=0;k<items.length;k++){
 					if(j!=0){
-						developer.DZone_Coefficient.put(columns.get(j), Double.parseDouble(items[k]));
+						//developer.DZone_Coefficient.put(columns.get(j), Double.parseDouble(items[k]));
 						//System.out.println(columns.get(j));
-						
+						developer.DZone_Coefficient.put(project.zones.get(j), Double.parseDouble(items[k]));
+						developer.DZone_Wage.put(project.zones.get(j), Double.parseDouble(wage_items[k])*Double.parseDouble(wage_items[wage_items.length-1]));
+						System.out.println(Double.parseDouble(wage_items[k]));
 					}
 					else{
 						developer=new Developer(0);
@@ -91,7 +98,6 @@ public class Test1 {
 			System.out.println(dev.getValue().DZone_Coefficient.keySet());
 		}
 		System.out.println(columns.values());
-		
 		
 		
 		
@@ -137,12 +143,15 @@ public class Test1 {
 						String[] items=sc1.nextLine().split("\t",-1);
 						for(int k=0;k<items.length;k++){
 							if(j>2){
-								bug.BZone_Coefficient.put(columns.get(j), Double.parseDouble(items[k]));
-								
+								//bug.BZone_Coefficient.put(columns.get(j), Double.parseDouble(items[k]));
+								bug.BZone_Coefficient.put(project.zones.get(j-2),Double.parseDouble(items[k]));
 							}
 							else if(j==0){
 								bug=new Bug(0);
 								bug.setID(Integer.parseInt(items[k]));
+							}
+							else if(j==2){
+								bug.setTotalEstimatedEffort(Double.parseDouble(items[k]));
 							}
 							j++;
 						}
@@ -239,14 +248,15 @@ public class Test1 {
 	//assigning to developer
 	public static NondominatedPopulation[] Assigning(NondominatedPopulation[] results){
 		NondominatedPopulation result_Karim=new Executor().withProblemClass(CompetenceMulti2_problem.class).withAlgorithm("NSGAII")
-				.withMaxEvaluations(500).withProperty("populationSize",GA_Problem_Parameter.population)
+				.withMaxEvaluations(100).withProperty("populationSize",GA_Problem_Parameter.population)
 				.withProperty("sbx.rate", GA_Problem_Parameter.sbx_rate).withProperty("sbx.distributionIndex", GA_Problem_Parameter.sbx_distribution_index)
 				.withProperty("pm.rate", GA_Problem_Parameter.pm_rate).withProperty("pm.distributionIndex", GA_Problem_Parameter.pm_distribution_index)
 				.run();
 		results[0]=result_Karim;
-		
+
+		System.out.println("finished first one");
 	    NondominatedPopulation result_me=new Executor().withProblemClass(InformationDifussion.class).withAlgorithm("NSGAII")
-				.withMaxEvaluations(500).withProperty("populationSize",GA_Problem_Parameter.population)
+				.withMaxEvaluations(100).withProperty("populationSize",GA_Problem_Parameter.population)
 				.withProperty("sbx.rate", GA_Problem_Parameter.sbx_rate).withProperty("sbx.distributionIndex", GA_Problem_Parameter.sbx_distribution_index)
 				.withProperty("pm.rate", GA_Problem_Parameter.pm_rate).withProperty("pm.distributionIndex", GA_Problem_Parameter.pm_distribution_index)
 				.run();
