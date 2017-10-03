@@ -16,6 +16,7 @@ import java.util.Scanner;
 import org.moeaframework.Executor;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 
 
@@ -23,7 +24,11 @@ public class Test1 {
 	public static HashMap<Integer,Developer> developers=new HashMap<Integer,Developer>();
 	static HashMap<Integer,Bug> bugs=new HashMap<Integer,Bug>();
 	static Solution solution=null;
+	static HashMap<Integer , Zone> columns=new HashMap<Integer, Zone>();
+	static Project project=new Project();
+	
 	public static void main(String[] args) throws IOException{
+		devInitialization();
 		int roundNum=5;
 		for(int i=1;i<=roundNum;i++){
 		Initialization(i);
@@ -31,83 +36,79 @@ public class Test1 {
 		results=Assigning(results);
 		solution=results[1].get(results[1].size()/2);
 		writeResult(i,results);
+		System.out.println("finished writing");
 		afterRoundUpdating(solution);
 		}
 	}
 	
-	public static void Initialization( int roundNum) throws IOException,NoSuchElementException{
-		HashMap<Integer , Zone> columns=new HashMap<Integer, Zone>();
-		
-		Project project=new Project();
-		
-		
-		
+	public static void devInitialization() throws IOException,NoSuchElementException{
 		//initialize developers
-		System.out.println("enter the developrs file");
-		Developer developer = null;
-		Scanner sc=new Scanner(System.in);
-		sc=new Scanner(new File(sc.nextLine()));
-		System.out.println("enter the devlopers wage file");
-		Scanner scan=new Scanner(System.in);
-		scan=new Scanner(new File(scan.nextLine()));
-		int i=0;
-		int j=0;
-		while(sc.hasNextLine() && scan.hasNextLine()){
-			if(i==0){
-				String[] items=sc.nextLine().split("\t",-1);
-				scan.nextLine();
-					for(int k=0;k<items.length;k++){
-						if(j!=0){
-						Zone zone=new Zone(j, items[k]);
-						project.zones.put(j, zone);
-						columns.put(j,zone);
-						}
-						j++;
-					}
-			}
-			else{
-				String[] items=sc.nextLine().split("\t",-1);
-				String[] wage_items=scan.nextLine().split("\t",-1);
-				for(int k=0;k<items.length;k++){
-					if(j!=0){
-						//developer.DZone_Coefficient.put(columns.get(j), Double.parseDouble(items[k]));
-						//System.out.println(columns.get(j));
-						developer.DZone_Coefficient.put(project.zones.get(j), Double.parseDouble(items[k]));
-						developer.DZone_Wage.put(project.zones.get(j), Double.parseDouble(wage_items[k])*Double.parseDouble(wage_items[wage_items.length-1]));
-						System.out.println(Double.parseDouble(wage_items[k]));
+				System.out.println("enter the developrs file");
+				Developer developer = null;
+				Scanner sc=new Scanner(System.in);
+				sc=new Scanner(new File(sc.nextLine()));
+				System.out.println("enter the devlopers wage file");
+				Scanner scan=new Scanner(System.in);
+				scan=new Scanner(new File(scan.nextLine()));
+				int i=0;
+				int j=0;
+				while(sc.hasNextLine() && scan.hasNextLine()){
+					if(i==0){
+						String[] items=sc.nextLine().split("\t",-1);
+						scan.nextLine();
+							for(int k=0;k<items.length;k++){
+								if(j!=0){
+								Zone zone=new Zone(j, items[k]);
+								project.zones.put(j, zone);
+								columns.put(j,zone);
+								}
+								j++;
+							}
 					}
 					else{
-						developer=new Developer(0);
-						developer.setID(i);
+						String[] items=sc.nextLine().split("\t",-1);
+						String[] wage_items=scan.nextLine().split("\t",-1);
+						for(int k=0;k<items.length;k++){
+							if(j!=0){
+								//developer.DZone_Coefficient.put(columns.get(j), Double.parseDouble(items[k]));
+								//System.out.println(columns.get(j));
+								developer.DZone_Coefficient.put(project.zones.get(j), Double.parseDouble(items[k]));
+								developer.DZone_Wage.put(project.zones.get(j), Double.parseDouble(wage_items[k])*Double.parseDouble(wage_items[wage_items.length-1]));
+								System.out.println(Double.parseDouble(wage_items[k]));
+							}
+							else{
+								developer=new Developer(0);
+								developer.setID(i);
+							}
+							j++;
+						}
+					developers.put(developer.getID(), developer);
 					}
-					j++;
+					i++;
+					j=0;
 				}
-			developers.put(developer.getID(), developer);
-			}
-			i++;
-			j=0;
-		}
+				
+				
+				
+				
+				/*assign GA_Problem_Parameter DevList*/
+				for(Map.Entry<Integer, Developer> dev:developers.entrySet()){
+					GA_Problem_Parameter.DevList.add(dev.getKey());
+					System.out.println(dev.getValue().DZone_Coefficient.values());
+					System.out.println(dev.getValue().DZone_Coefficient.keySet());
+				}
+				System.out.println(columns.values());
+				
+				
+				
+				
+	}
+	
+	public static void Initialization( int roundNum) throws IOException,NoSuchElementException{
 		
-		
-		
-		
-		/*assign GA_Problem_Parameter DevList*/
-		for(Map.Entry<Integer, Developer> dev:developers.entrySet()){
-			GA_Problem_Parameter.DevList.add(dev.getKey());
-			System.out.println(dev.getValue().DZone_Coefficient.values());
-			System.out.println(dev.getValue().DZone_Coefficient.keySet());
-		}
-		System.out.println(columns.values());
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+		Scanner sc=new Scanner(System.in);
+		int i=0;
+		int j=0;
 		/*generate bug objects*/
 		System.out.println("enter the bugs files");
 		Bug bug=null;
@@ -210,8 +211,8 @@ public class Test1 {
 			}
 		}
 		
-		sc1.close();
-		sc.close();
+		//sc1.close();
+		//sc.close();
 		/* set competency dependencies*/
 		
 		
@@ -248,27 +249,27 @@ public class Test1 {
 	//assigning to developer
 	public static NondominatedPopulation[] Assigning(NondominatedPopulation[] results){
 		NondominatedPopulation result_Karim=new Executor().withProblemClass(CompetenceMulti2_problem.class).withAlgorithm("NSGAII")
-				.withMaxEvaluations(100).withProperty("populationSize",GA_Problem_Parameter.population)
+				.withMaxEvaluations(300).withProperty("populationSize",GA_Problem_Parameter.population)
 				.withProperty("sbx.rate", GA_Problem_Parameter.sbx_rate).withProperty("sbx.distributionIndex", GA_Problem_Parameter.sbx_distribution_index)
 				.withProperty("pm.rate", GA_Problem_Parameter.pm_rate).withProperty("pm.distributionIndex", GA_Problem_Parameter.pm_distribution_index)
 				.run();
 		results[0]=result_Karim;
-
-		System.out.println("finished first one");
+		
 	    NondominatedPopulation result_me=new Executor().withProblemClass(InformationDifussion.class).withAlgorithm("NSGAII")
-				.withMaxEvaluations(100).withProperty("populationSize",GA_Problem_Parameter.population)
+				.withMaxEvaluations(300).withProperty("populationSize",GA_Problem_Parameter.population)
 				.withProperty("sbx.rate", GA_Problem_Parameter.sbx_rate).withProperty("sbx.distributionIndex", GA_Problem_Parameter.sbx_distribution_index)
 				.withProperty("pm.rate", GA_Problem_Parameter.pm_rate).withProperty("pm.distributionIndex", GA_Problem_Parameter.pm_distribution_index)
 				.run();
 	    results[1]=result_me;
-	    
+
+		System.out.println("finished second one");
 	    return results;
 	    
 	}
 	
 	public static void writeResult(int roundNum, NondominatedPopulation[] result) throws FileNotFoundException{
 		//write results to CSV for each round
-		PrintWriter pw=new PrintWriter(new File("solutions_Karim_round"+roundNum));
+		PrintWriter pw=new PrintWriter(new File("solutions_Karim_round "+roundNum));
 		StringBuilder sb=new StringBuilder();
 		for(Solution solution:result[0]){
 			sb.append(solution.getObjective(0)+","+solution.getObjective(1));
@@ -278,7 +279,7 @@ public class Test1 {
 		pw.write(sb.toString());
 		pw.close();
 		
-		pw=new PrintWriter(new File("solutions_Me_round"+roundNum));
+		pw=new PrintWriter(new File("solutions_Me_round "+roundNum));
 		sb.setLength(0);
 		for(Solution solution:result[1]){
 			sb.append(solution.getObjective(0)+","+solution.getObjective(1));
@@ -295,7 +296,7 @@ public class Test1 {
 		int variableNum=0;
 		for(Map.Entry<Integer, Bug> bug:bugs.entrySet()){
 			for(Map.Entry<Zone, Double> zone:bug.getValue().BZone_Coefficient.entrySet()){
-				updateDeveloperSkills(solution.getVariable(variableNum).toString(),zone);
+				updateDeveloperSkills(EncodingUtils.getInt(solution.getVariable(variableNum)),zone);
 				variableNum++;
 			}
 		}
@@ -329,10 +330,10 @@ public class Test1 {
 		return CumulativeSkillLevel;
 	}
 	
-	public static void updateDeveloperSkills(String dev, Map.Entry<Zone, Double> zone){
-		for(Map.Entry<Zone, Double> devZone:developers.get(Integer.parseInt(dev)).DZone_Coefficient.entrySet()){
+	public static void updateDeveloperSkills(int dev, Map.Entry<Zone, Double> zone){
+		for(Map.Entry<Zone, Double> devZone:developers.get(dev).DZone_Coefficient.entrySet()){
 			if(devZone.getKey().zId==zone.getKey().zId)
-				developers.get(Integer.parseInt(dev)).DZone_Coefficient.put(devZone.getKey(),devZone.getValue()+zone.getValue());
+				developers.get(dev).DZone_Coefficient.put(devZone.getKey(),devZone.getValue()+zone.getValue());
 		}
 	}
 	

@@ -37,7 +37,7 @@ public static double totalTime(Bug bug, Entry<Zone, Double> zone,
 		}
 	}*/
 	//compute total time for competency 
-	double tct=bug.getTotalEstimatedEffort()*bug.BZone_Coefficient.get(zone.getKey())/(developer.getDZone_Coefficient().get(zone.getKey()));
+	double tct=bug.getTotalEstimatedEffort()*bug.BZone_Coefficient.get(zone.getKey())/((developer.getDZone_Coefficient().get(zone.getKey()))+1);
 	return tct+bug.startTime;
 }
 

@@ -75,11 +75,13 @@ public class InformationDifussion extends AbstractProblem{
 		 for (int i = 0; i < GA_Problem_Parameter.Num_of_Bugs; i++) {
 			 for(Entry<Zone, Double>  zone:bugs[i].BZone_Coefficient.entrySet())
 				 f2_2 +=fitnessCalc.getSimBug( developers.get(EncodingUtils.getInt(solution.getVariable(numOfVar))), bugs[i],zone.getKey());
+			
 		 }
 		 f2=f2_1+f2_2;
 		 
 		solution.setObjective(0, f1);
 		solution.setObjective(1, f2);
+		
 		 }
 
 }

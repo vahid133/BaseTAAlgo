@@ -43,11 +43,12 @@ public class CompetenceMulti2_problem extends AbstractProblem {
 		double f1 = 0.0;
 		double f2 = 0.0;
 		
-		System.out.println(GA_Problem_Parameter.Num_of_Bugs);
 		for (int i = 0; i < GA_Problem_Parameter.Num_of_Bugs; i++) {
 			 for(Map.Entry<Zone, Double>  zone:bugs[i].BZone_Coefficient.entrySet()){
 				f1+=fitnessCalc.totalTime(bugs[i],zone, developers.get(EncodingUtils.getInt(solution.getVariable(i))));
 			}
+
+				//System.out.println(f1);
 			bugs[i].endTime=f1+bugs[i].startTime;
 		 }
 		
