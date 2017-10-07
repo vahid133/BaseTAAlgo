@@ -56,16 +56,15 @@ public class InformationDifussion extends AbstractProblem{
 			 for(Map.Entry<Zone, Double>  zone:bugs[i].BZone_Coefficient.entrySet()){
 				f1+=fitnessCalc.totalTime(bugs[i],zone, developers.get(EncodingUtils.getInt(solution.getVariable(numOfVar))))
 						*developers.get(EncodingUtils.getInt(solution.getVariable(numOfVar))).getDZone_Wage().get(zone.getKey());;
-				numOfVar++;
+						numOfVar++;
 			 }
 			bugs[i].endTime=f1+bugs[i].startTime;
 		 }
-		
 		//compute zone dissimilarity
 		numOfVar=0;
 		 for (int i = 0; i < GA_Problem_Parameter.Num_of_Bugs; i++) {
 			 if(i>0)
-				 numOfVar+=bugs[i].BZone_Coefficient.size();
+				 numOfVar+=bugs[i-1].BZone_Coefficient.size();
 			 for(int j=0;j<bugs[i].BZone_Coefficient.size();j++){
 					for(int k=j+1;k<bugs[i].BZone_Coefficient.size();k++)
 						f2_1+=fitnessCalc.getSimDev(developers.get(EncodingUtils.getInt(solution.getVariable(numOfVar+j))),

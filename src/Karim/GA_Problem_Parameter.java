@@ -24,9 +24,9 @@ public class GA_Problem_Parameter {
 	
 	public static ArrayList<Integer> DevList=new ArrayList<Integer>();
 	
-	public void setNum_of_Variables(){
+	/*public void setNum_of_Variables(){
 		Num_of_variables=Num_of_Bugs*Num_of_Zones;
-	}
+	}*/
 	
 	public static int getRandomDevId(){
 		Random rg=new Random();

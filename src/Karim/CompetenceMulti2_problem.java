@@ -31,7 +31,7 @@ public class CompetenceMulti2_problem extends AbstractProblem {
 		for( int i=0;i<GA_Problem_Parameter.Num_of_variables;i++){
 				solution.setVariable(i,EncodingUtils.newInt(GA_Problem_Parameter.startDevId,GA_Problem_Parameter.endDevId));
 				j++;
-				System.out.println(GA_Problem_Parameter.startDevId+"----------"+EncodingUtils.getInt(solution.getVariable(i)));
+				//System.out.println(GA_Problem_Parameter.startDevId+"----------"+EncodingUtils.getInt(solution.getVariable(i)));
 			
 			}
 		return solution;
@@ -43,7 +43,6 @@ public class CompetenceMulti2_problem extends AbstractProblem {
 		
 		double f1 = 0.0;
 		double f2 = 0.0;
-		
 		int numOfVar=0;
 		for (int i = 0; i < GA_Problem_Parameter.Num_of_Bugs; i++) {
 			 for(Map.Entry<Zone, Double>  zone:bugs[i].BZone_Coefficient.entrySet()){

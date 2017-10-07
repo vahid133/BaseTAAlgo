@@ -143,7 +143,7 @@ public class Test1 {
 					else{
 						String[] items=sc1.nextLine().split("\t",-1);
 						for(int k=0;k<items.length;k++){
-							if(j>2){
+							if(j>2 && Double.parseDouble(items[k])!=0){
 								//bug.BZone_Coefficient.put(columns.get(j), Double.parseDouble(items[k]));
 								bug.BZone_Coefficient.put(project.zones.get(j-2),Double.parseDouble(items[k]));
 							}
