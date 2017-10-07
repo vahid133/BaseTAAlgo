@@ -315,10 +315,10 @@ public class Test1 {
 		}
 		try{
 			
-		GA_Problem_Parameter.DevList.remove(devId);
+		//GA_Problem_Parameter.DevList.remove(devId);
+		GA_Problem_Parameter.developers.remove(devId);
 		}
 		catch(Exception e){
-			e.printStackTrace();
 		}
 	
 	}
