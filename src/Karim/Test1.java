@@ -249,14 +249,14 @@ public class Test1 {
 	//assigning to developer
 	public static NondominatedPopulation[] Assigning(NondominatedPopulation[] results){
 		NondominatedPopulation result_Karim=new Executor().withProblemClass(CompetenceMulti2_problem.class).withAlgorithm("NSGAII")
-				.withMaxEvaluations(300).withProperty("populationSize",GA_Problem_Parameter.population)
+				.withMaxEvaluations(1000).withProperty("populationSize",GA_Problem_Parameter.population)
 				.withProperty("sbx.rate", GA_Problem_Parameter.sbx_rate).withProperty("sbx.distributionIndex", GA_Problem_Parameter.sbx_distribution_index)
 				.withProperty("pm.rate", GA_Problem_Parameter.pm_rate).withProperty("pm.distributionIndex", GA_Problem_Parameter.pm_distribution_index)
 				.run();
 		results[0]=result_Karim;
 		
 	    NondominatedPopulation result_me=new Executor().withProblemClass(InformationDifussion.class).withAlgorithm("NSGAII")
-				.withMaxEvaluations(300).withProperty("populationSize",GA_Problem_Parameter.population)
+				.withMaxEvaluations(1000).withProperty("populationSize",GA_Problem_Parameter.population)
 				.withProperty("sbx.rate", GA_Problem_Parameter.sbx_rate).withProperty("sbx.distributionIndex", GA_Problem_Parameter.sbx_distribution_index)
 				.withProperty("pm.rate", GA_Problem_Parameter.pm_rate).withProperty("pm.distributionIndex", GA_Problem_Parameter.pm_distribution_index)
 				.run();
@@ -269,7 +269,7 @@ public class Test1 {
 	
 	public static void writeResult(int roundNum, NondominatedPopulation[] result) throws FileNotFoundException{
 		//write results to CSV for each round
-		PrintWriter pw=new PrintWriter(new File("solutions_Karim_round "+roundNum));
+		PrintWriter pw=new PrintWriter(new File("results//solutions_Karim_round "+roundNum+".csv"));
 		StringBuilder sb=new StringBuilder();
 		for(Solution solution:result[0]){
 			sb.append(solution.getObjective(0)+","+solution.getObjective(1));
@@ -279,7 +279,7 @@ public class Test1 {
 		pw.write(sb.toString());
 		pw.close();
 		
-		pw=new PrintWriter(new File("solutions_Me_round "+roundNum));
+		pw=new PrintWriter(new File("results//solutions_Me_round "+roundNum+".csv"));
 		sb.setLength(0);
 		for(Solution solution:result[1]){
 			sb.append(solution.getObjective(0)+","+solution.getObjective(1));

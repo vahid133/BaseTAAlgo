@@ -11,31 +11,12 @@ public class fitnessCalc {
 public static double totalTime(Bug bug, Entry<Zone, Double> zone,
 		Developer developer) {
 	//set startTime
-	//System.out.println(bug.DB.size());
 	
 	for(int j=0;j<bug.DB.size();j++){
 		if(bug.endTime>bug.startTime)
 			bug.startTime=bug.DB.get(j).endTime;
 	}
 	
-	//System.out.println(bug.BZone_Coefficient.keySet());
-	//System.out.println(developer.DZone_Coefficient.keySet());
-	
-	/*System.out.println(developer.getDZone_Coefficient().keySet());
-	Zone dZone=null, bZone=null;
-	for(Map.Entry<Zone, Double> dz:developer.DZone_Coefficient.entrySet()){
-	System.out.print(dz.getKey().zId+"-----");
-		if(dz.getKey().zId==zone.getKey().zId){
-			dZone=dz.getKey();
-		}
-	}
-	System.out.println();
-	for(Map.Entry<Zone, Double> bz:bug.BZone_Coefficient.entrySet()){
-		System.out.print(bz.getKey().zId+"---");
-		if(bz.getKey().zId==zone.getKey().zId){
-			bZone=bz.getKey();
-		}
-	}*/
 	//compute total time for competency 
 	double tct=bug.getTotalEstimatedEffort()*bug.BZone_Coefficient.get(zone.getKey())/((developer.getDZone_Coefficient().get(zone.getKey()))+1);
 	return tct+bug.startTime;
@@ -58,5 +39,11 @@ public static double totalTime(Bug bug, Entry<Zone, Double> zone,
 	 return DBSim;
  }
 
+ public static void setBugEndTime(Bug bug){
+	 for(int j=0;j<bug.DB.size();j++){
+			if(bug.endTime>bug.startTime)
+				bug.startTime=bug.DB.get(j).endTime;
+		}
+ }
 }
 
