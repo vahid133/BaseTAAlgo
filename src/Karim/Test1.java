@@ -216,8 +216,8 @@ public class Test1 {
 		/* set competency dependencies*/
 		
 		
-		//initialize GA parameters
 		
+		//initialize GA parameters
 		GA_Problem_Parameter.Num_of_variables=bugs.size();
 		for(Entry<Integer, Developer> dev:developers.entrySet()){
 			GA_Problem_Parameter.DevList.add(dev.getKey());
