@@ -29,7 +29,8 @@ public class CompetenceMulti2_problem extends AbstractProblem {
 		Solution solution=new Solution(GA_Problem_Parameter.Num_of_variables,GA_Problem_Parameter.Num_of_functions);
 			int j=0;
 		for( int i=0;i<GA_Problem_Parameter.Num_of_variables;i++){
-				solution.setVariable(i,EncodingUtils.newInt(GA_Problem_Parameter.startDevId,GA_Problem_Parameter.endDevId));
+				int randDevId=GA_Problem_Parameter.getRandomDevId();
+				solution.setVariable(i,EncodingUtils.newInt(randDevId,randDevId));
 				j++;
 				//System.out.println(GA_Problem_Parameter.startDevId+"----------"+EncodingUtils.getInt(solution.getVariable(i)));
 			
@@ -40,10 +41,10 @@ public class CompetenceMulti2_problem extends AbstractProblem {
 	
 	@Override 	
 	public void evaluate(Solution solution){
-		
 		double f1 = 0.0;
 		double f2 = 0.0;
 		int numOfVar=0;
+		System.out.println(developers.keySet());
 		for (int i = 0; i < GA_Problem_Parameter.Num_of_Bugs; i++) {
 			 for(Map.Entry<Zone, Double>  zone:bugs[i].BZone_Coefficient.entrySet()){
 				f1+=fitnessCalc.totalTime(bugs[i],zone, developers.get(EncodingUtils.getInt(solution.getVariable(numOfVar))));
@@ -57,7 +58,7 @@ public class CompetenceMulti2_problem extends AbstractProblem {
 		numOfVar=0;
 		 for (int i = 0; i < GA_Problem_Parameter.Num_of_Bugs; i++) {
 			 for(Map.Entry<Zone, Double>  zone:bugs[i].BZone_Coefficient.entrySet()){
-					f2+=fitnessCalc.totalTime(bugs[i],zone, developers.get(EncodingUtils.getInt(solution.getVariable(numOfVar))))
+				 	f2+=fitnessCalc.totalTime(bugs[i],zone, developers.get(EncodingUtils.getInt(solution.getVariable(numOfVar))))
 							*developers.get(EncodingUtils.getInt(solution.getVariable(numOfVar))).getDZone_Wage().get(zone.getKey());
 					numOfVar++;
 			 }

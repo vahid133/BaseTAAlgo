@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -38,6 +39,7 @@ public class Test1 {
 		writeResult(i,results);
 		System.out.println("finished writing");
 		afterRoundUpdating(solution);
+		removeDevelopers();
 		}
 	}
 	
@@ -94,11 +96,8 @@ public class Test1 {
 				/*assign GA_Problem_Parameter DevList*/
 				for(Map.Entry<Integer, Developer> dev:developers.entrySet()){
 					GA_Problem_Parameter.DevList.add(dev.getKey());
-					System.out.println(dev.getValue().DZone_Coefficient.values());
-					System.out.println(dev.getValue().DZone_Coefficient.keySet());
 				}
-				System.out.println(columns.values());
-				
+				GA_Problem_Parameter.developers=developers;
 				
 				
 				
@@ -219,11 +218,11 @@ public class Test1 {
 		
 		//initialize GA parameters
 		GA_Problem_Parameter.Num_of_variables=bugs.size();
+		GA_Problem_Parameter.developers=developers;
+		GA_Problem_Parameter.DevList=new ArrayList<Integer>();
 		for(Entry<Integer, Developer> dev:developers.entrySet()){
 			GA_Problem_Parameter.DevList.add(dev.getKey());
-			System.out.println(dev.getKey());
 		}
-		GA_Problem_Parameter.developers=developers;
 		
 		int b_index=0;
 		GA_Problem_Parameter.bugs=new Bug[bugs.size()];
@@ -316,7 +315,8 @@ public class Test1 {
 		try{
 			
 		//GA_Problem_Parameter.DevList.remove(devId);
-		GA_Problem_Parameter.developers.remove(devId);
+		developers.remove(devId);
+		System.out.println(devId);
 		}
 		catch(Exception e){
 		}
