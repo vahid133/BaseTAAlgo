@@ -29,28 +29,35 @@ public class Test1 {
 	static Project project=new Project();
 	
 	public static void main(String[] args) throws IOException{
-		devInitialization();
-		int roundNum=5;
-		for(int i=1;i<=roundNum;i++){
-		Initialization(i);
-		NondominatedPopulation[] results = new NondominatedPopulation[2]; 
-		results=Assigning(results);
-		solution=results[1].get(results[1].size()/2);
-		writeResult(i,results);
-		System.out.println("finished writing");
-		afterRoundUpdating(solution);
-		removeDevelopers();
+		for(int runNum=0;runNum<50;runNum++){
+			double[] costs=new double[2];
+			developers.clear();
+			bugs.clear();
+			devInitialization();
+			int roundNum=5;
+			for(int i=1;i<=roundNum;i++){
+			Initialization(i);
+			NondominatedPopulation[] results = new NondominatedPopulation[2]; 
+			results=Assigning(results);
+			solution=results[1].get(results[1].size()/2);
+			writeResult(runNum,i,results);
+			System.out.println("finished writing");
+			afterRoundUpdating(solution);
+			removeDevelopers();
+			}
+		
 		}
+		
 	}
 	
 	public static void devInitialization() throws IOException,NoSuchElementException{
 		//initialize developers
 				System.out.println("enter the developrs file");
 				Developer developer = null;
-				Scanner sc=new Scanner(System.in);
+				Scanner sc=new Scanner("src\\Karim\\bug-data\\bug-data\\JDTDeveloper.txt");
 				sc=new Scanner(new File(sc.nextLine()));
 				System.out.println("enter the devlopers wage file");
-				Scanner scan=new Scanner(System.in);
+				Scanner scan=new Scanner("src\\Karim\\bug-data\\bug-data\\JDTDeveloperWithWage.txt");
 				scan=new Scanner(new File(scan.nextLine()));
 				int i=0;
 				int j=0;
@@ -111,7 +118,8 @@ public class Test1 {
 		/*generate bug objects*/
 		System.out.println("enter the bugs files");
 		Bug bug=null;
-		sc=new Scanner(System.in);
+		//sc=new Scanner(System.in);
+		sc=new Scanner("src\\Karim\\bug-data\\JDT\\efforts");
 		int n=0;
 		Scanner sc1=null;
 		for(File fileEntry:new File(sc.nextLine()).listFiles()){
@@ -172,7 +180,8 @@ public class Test1 {
 					
 		/*set bug dependencies*/
 		System.out.println("enter the bug dependency files");
-		sc=new Scanner(System.in);
+		
+		sc=new Scanner("src\\Karim\\bug-data\\JDT\\dependencies");
 		String[] columns_bug=null;
 		for(File fileEntry:new File(sc.nextLine()).listFiles()){
 			
@@ -266,9 +275,9 @@ public class Test1 {
 	    
 	}
 	
-	public static void writeResult(int roundNum, NondominatedPopulation[] result) throws FileNotFoundException{
+	public static void writeResult(int runNum,int roundNum, NondominatedPopulation[] result) throws FileNotFoundException{
 		//write results to CSV for each round
-		PrintWriter pw=new PrintWriter(new File("results//solutions_Karim_round "+roundNum+".csv"));
+		PrintWriter pw=new PrintWriter(new File("results//solutions_Karim_round "+runNum+"_"+roundNum+".csv"));
 		StringBuilder sb=new StringBuilder();
 		for(Solution solution:result[0]){
 			sb.append(solution.getObjective(0)+","+solution.getObjective(1));
@@ -278,7 +287,7 @@ public class Test1 {
 		pw.write(sb.toString());
 		pw.close();
 		
-		pw=new PrintWriter(new File("results//solutions_Me_round "+roundNum+".csv"));
+		pw=new PrintWriter(new File("results//solutions_Me_round "+runNum+"_"+roundNum+".csv"));
 		sb.setLength(0);
 		for(Solution solution:result[1]){
 			sb.append(solution.getObjective(0)+","+solution.getObjective(1));
@@ -335,6 +344,10 @@ public class Test1 {
 			if(devZone.getKey().zId==zone.getKey().zId)
 				developers.get(dev).DZone_Coefficient.put(devZone.getKey(),devZone.getValue()+zone.getValue());
 		}
+	}
+	
+	public static void writeResultsforRuns(){
+		
 	}
 	
 }
