@@ -78,11 +78,15 @@ public class Test1 {
 					else{
 						String[] items=sc.nextLine().split("\t",-1);
 						String[] wage_items=scan.nextLine().split("\t",-1);
+						double sumOfPro=0.0;
+						for(int k=0;k<items.length;k++){
+							sumOfPro+=Double.parseDouble(items[k]);
+						}
 						for(int k=0;k<items.length;k++){
 							if(j!=0){
 								//developer.DZone_Coefficient.put(columns.get(j), Double.parseDouble(items[k]));
 								//System.out.println(columns.get(j));
-								developer.DZone_Coefficient.put(project.zones.get(j), Double.parseDouble(items[k]));
+								developer.DZone_Coefficient.put(project.zones.get(j), (Double.parseDouble(items[k])/sumOfPro));
 								developer.DZone_Wage.put(project.zones.get(j), Double.parseDouble(wage_items[k])*Double.parseDouble(wage_items[wage_items.length-1]));
 								System.out.println(Double.parseDouble(wage_items[k]));
 							}
