@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
-
+import java.util.Queue;
 import org.moeaframework.Executor;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
@@ -24,6 +24,7 @@ import org.moeaframework.core.variable.RealVariable;
 public class Test1 {
 	public static HashMap<Integer,Developer> developers=new HashMap<Integer,Developer>();
 	static HashMap<Integer,Bug> bugs=new HashMap<Integer,Bug>();
+	static Queue<Bug> orderdBugs; 
 	static Solution solution=null;
 	static HashMap<Integer , Zone> columns=new HashMap<Integer, Zone>();
 	static Project project=new Project();
