@@ -51,7 +51,6 @@ public class CompetenceMulti2_problem extends AbstractProblem {
 				numOfVar++;
 			 }
 
-				//System.out.println(f1);
 			bugs[i].endTime=f1+bugs[i].startTime;
 		 }
 		
