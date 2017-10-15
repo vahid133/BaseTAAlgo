@@ -23,11 +23,18 @@ public class GA_Problem_Parameter {
 	public static final int endDevId=20;
 	
 	public static ArrayList<Integer> DevList=new ArrayList<Integer>();
-	
+	public static ArrayList<Integer> DevList_forAssignment=new ArrayList<Integer>();
 	/*public void setNum_of_Variables(){
 		Num_of_variables=Num_of_Bugs*Num_of_Zones;
 	}*/
 	
+	
+	public static void initializeDeveloperPool(){
+		for(int i=0;i<3;i++){
+			for(Integer dev:DevList)
+				DevList_forAssignment.add(dev);
+		}
+	}
 	public static int getRandomDevId(){
 		Random rg=new Random();
 		int index=rg.nextInt(DevList.size());
@@ -35,11 +42,11 @@ public class GA_Problem_Parameter {
 	}
 	
 	public static int getDevId(){
-		if(DevList.size()>0){
+		if(DevList_forAssignment.size()>0){
 			Random rg=new Random();
-			int index=rg.nextInt(DevList.size());
-			int devId=DevList.get(index);
-			DevList.remove(index);
+			int index=rg.nextInt(DevList_forAssignment.size());
+			int devId=DevList_forAssignment.get(index);
+			DevList_forAssignment.remove(index);
 			return devId;
 		}
 		else{

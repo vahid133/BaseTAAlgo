@@ -60,7 +60,11 @@ public class InformationDifussion extends AbstractProblem{
 			 }
 			bugs[i].endTime=f1+bugs[i].startTime;
 		 }
+		
 		//compute zone dissimilarity
+		
+		
+		/*
 		numOfVar=0;
 		 for (int i = 0; i < GA_Problem_Parameter.Num_of_Bugs; i++) {
 			 if(i>0)
@@ -71,13 +75,31 @@ public class InformationDifussion extends AbstractProblem{
 												  developers.get(EncodingUtils.getInt(solution.getVariable(numOfVar+k))));
 					
 			 }
+		 }*/
+		
+		numOfVar=0;
+		 ArrayList<Developer> devs=new ArrayList<Developer>();
+		 for (int i = 0; i < GA_Problem_Parameter.Num_of_Bugs; i++) {
+			 for(Entry<Zone, Double>  zone:bugs[i].BZone_Coefficient.entrySet()){
+				 //f2_2 +=fitnessCalc.getSimBug( developers.get(EncodingUtils.getInt(solution.getVariable(numOfVar))), bugs[i],zone.getKey());
+				 devs.add(developers.get(EncodingUtils.getInt(solution.getVariable(numOfVar))));
+				 numOfVar++;
+			 }
+			 f2_1+=fitnessCalc.getDataFlow(bugs[i].BZone_Coefficient, devs);
 		 }
+		
+		
+		
 		//compute team similarity
 		 numOfVar=0;
+		 devs.clear();
 		 for (int i = 0; i < GA_Problem_Parameter.Num_of_Bugs; i++) {
-			 for(Entry<Zone, Double>  zone:bugs[i].BZone_Coefficient.entrySet())
-				 f2_2 +=fitnessCalc.getSimBug( developers.get(EncodingUtils.getInt(solution.getVariable(numOfVar))), bugs[i],zone.getKey());
-			
+			 for(Entry<Zone, Double>  zone:bugs[i].BZone_Coefficient.entrySet()){
+				 //f2_2 +=fitnessCalc.getSimBug( developers.get(EncodingUtils.getInt(solution.getVariable(numOfVar))), bugs[i],zone.getKey());
+				 devs.add(developers.get(EncodingUtils.getInt(solution.getVariable(numOfVar))));
+				 numOfVar++;
+			 }
+			 f2_2+=fitnessCalc.getTZoneSim(bugs[i].BZone_Coefficient, devs);
 		 }
 		 f2=f2_1+f2_2;
 		 

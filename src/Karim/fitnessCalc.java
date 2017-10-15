@@ -23,7 +23,13 @@ public static double totalTime(Bug bug, Entry<Zone, Double> zone,
 	return tct+bug.startTime;
 }
 
+public static double getDelayTime(Bug bug, Entry<Zone, Double> zone,
+		Developer developer){
+	
+	return 0;
+}
 
+public static double 
  public static double getSimDev(Developer d1, Developer d2){
 	 double DDSim_intersection=0.0;
 	 double DDSim_union=0.0;
@@ -72,14 +78,29 @@ public static double totalTime(Bug bug, Entry<Zone, Double> zone,
  
  public static double getDataFlow(HashMap<Zone, Double> bugZone, ArrayList<Developer> devs){
 	 double dev_bugZone_sim=0;
+	 double dev_not_assigned_sim=0;
 	 double dataFlow=0;
 	 int i=0;
 	 for(Map.Entry<Zone, Double>  bZone:bugZone.entrySet()){
-		 dev_bugZone_sim+=Math.max(bZone.getValue(), devs.get(i).DZone_Coefficient.get(bZone.getKey()));
+		 double maxZoneOverlap=0;
+		 double devNotAssignedZoneSim=0;
+		 for(Developer dev:devs){
+			 maxZoneOverlap=Math.max(dev.DZone_Coefficient.get(bZone.getKey()), maxZoneOverlap);
+			 for(Map.Entry<Zone, Double>  bug_zone:bugZone.entrySet()){
+				 if(bug_zone.getKey().zId!=bZone.getKey().zId){
+					 devNotAssignedZoneSim+=dev.DZone_Coefficient.get(bug_zone.getKey());
+				 }
+			 }
+			 //the only problem might happen is originated from the situation that the bugZoneItem has not had for selected developer.
+		 }
+		 //dev_bugZone_sim+=Math.max(bZone.getValue(), devs.get(i).DZone_Coefficient.get(bZone.getKey()));
+		 dev_bugZone_sim+=maxZoneOverlap;
+		 dev_not_assigned_sim+=devNotAssignedZoneSim/(bugZone.size()-1);
+		 
 		 i++;
 	 }
 	 
-	return 0;
+	return (dev_bugZone_sim/bugZone.size())+(dev_not_assigned_sim/devs.size());
 	 
  }
 }
