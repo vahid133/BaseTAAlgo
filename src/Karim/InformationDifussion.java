@@ -54,7 +54,7 @@ public class InformationDifussion extends AbstractProblem{
 		int numOfVar=0; 
 		for (int i = 0; i < GA_Problem_Parameter.Num_of_Bugs; i++) {
 			 for(Map.Entry<Zone, Double>  zone:bugs[i].BZone_Coefficient.entrySet()){
-				f1+=fitnessCalc.totalTime(bugs[i],zone, developers.get(EncodingUtils.getInt(solution.getVariable(numOfVar))))
+				f1+=fitnessCalc.completionTime(bugs[i],zone, developers.get(EncodingUtils.getInt(solution.getVariable(numOfVar))))
 						*developers.get(EncodingUtils.getInt(solution.getVariable(numOfVar))).getDZone_Wage().get(zone.getKey());;
 						numOfVar++;
 			 }

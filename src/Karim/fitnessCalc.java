@@ -10,7 +10,7 @@ import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 public class fitnessCalc {
 
 
-public static double totalTime(Bug bug, Entry<Zone, Double> zone,
+public static double completionTime(Bug bug, Entry<Zone, Double> zone,
 		Developer developer) {
 	//set startTime
 	
@@ -29,7 +29,11 @@ public static double getDelayTime(Bug bug, Entry<Zone, Double> zone,
 	return 0;
 }
 
-public static double 
+public static double taskDependencyDelayTime(Bug bug, Entry<Zone, Double> zone,
+Developer developer){
+	return 0;
+}
+
  public static double getSimDev(Developer d1, Developer d2){
 	 double DDSim_intersection=0.0;
 	 double DDSim_union=0.0;
