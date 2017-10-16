@@ -31,6 +31,7 @@ public static double getDelayTime(Bug bug, Entry<Zone, Double> zone,
 
 public static double taskDependencyDelayTime(Bug bug, Entry<Zone, Double> zone,
 Developer developer){
+	
 	return 0;
 }
 
