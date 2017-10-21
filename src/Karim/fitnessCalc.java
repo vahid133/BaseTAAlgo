@@ -7,32 +7,35 @@ import java.util.Map.Entry;
 
 import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 
+import com.sun.xml.internal.bind.v2.model.core.ID;
+
 public class fitnessCalc {
 
 
 public static double completionTime(Bug bug, Entry<Zone, Double> zone,
-		Developer developer) {
-	//set startTime
-	
-	for(int j=0;j<bug.DB.size();j++){
-		if(bug.endTime>bug.startTime)
-			bug.startTime=bug.DB.get(j).endTime;
-	}
+		Developer developer) {	
 	//compute total time for competency 
 	double tct=bug.getTotalEstimatedEffort()*bug.BZone_Coefficient.get(zone.getKey())/((developer.getDZone_Coefficient().get(zone.getKey()))+1);
-	return tct+bug.startTime;
+	return tct;
 }
 
 public static double getDelayTime(Bug bug, Entry<Zone, Double> zone,
 		Developer developer){
-	
-	return 0;
+	double delayTime=Math.max(taskDependencyDelayTime(bug, zone, developer), developer.developerNextAvailableHour);
+	return delayTime;
 }
 
 public static double taskDependencyDelayTime(Bug bug, Entry<Zone, Double> zone,
 Developer developer){
+	for(Zone z:zone.getKey().DZ){
+		zone.getKey().zoneStartTime=Math.max(zone.getKey().zoneStartTime,z.zoneEndTime);
+	}
 	
-	return 0;
+	for(int j=0;j<bug.DB.size();j++){
+			bug.startTime=Math.max(bug.startTime, bug.DB.get(j).endTime);
+	}
+	
+	return Math.max(zone.getKey().zoneStartTime, bug.startTime);
 }
 
  public static double getSimDev(Developer d1, Developer d2){
@@ -85,7 +88,7 @@ Developer developer){
 	 double dev_bugZone_sim=0;
 	 double dev_not_assigned_sim=0;
 	 double dataFlow=0;
-	 int i=0;
+	 /*int i=0;
 	 for(Map.Entry<Zone, Double>  bZone:bugZone.entrySet()){
 		 double maxZoneOverlap=0;
 		 double devNotAssignedZoneSim=0;
@@ -103,10 +106,28 @@ Developer developer){
 		 dev_not_assigned_sim+=devNotAssignedZoneSim/(bugZone.size()-1);
 		 
 		 i++;
-	 }
+	 }*/
 	 
+	 
+
+		double IDFlow[][]=new double[devs.size()][devs.size()];
+		for(int i=0;i<IDFlow.length;i++){
+			for(int j=0;j<IDFlow[0].length;j++){
+				
+			}
+			
+		}
+		
 	return (dev_bugZone_sim/bugZone.size())+(dev_not_assigned_sim/devs.size());
+	
+	
+	
+	
 	 
+ }
+ 
+ public static double getNotAssignedTaskCost(){
+	 return 0;
  }
 }
 

@@ -8,7 +8,7 @@ public class Developer
 	private int competenceProfileCount;
 	private int ID;
 	private double competenceProfile[];
-	private int developerNextAvailableHour;
+	public int developerNextAvailableHour;
 	private int totalAssignedBugs;
 	public HashMap< Zone, Double> DZone_Wage=new HashMap<Zone,Double>();
 	public HashMap< Zone, Double> DZone_Coefficient=new HashMap<Zone,Double>();

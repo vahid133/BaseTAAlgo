@@ -51,8 +51,7 @@ public class GA_Problem_Parameter {
 		}
 		else{
 			return -1;
-		}
-		
+		}	
 	}
 
 }

@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 public class Bug 
 {
-	ArrayList<Bug> DB=new ArrayList<Bug>();
+	public ArrayList<Bug> DB=new ArrayList<Bug>();
 	int competenceProfileCount;
 	int ID;
 	double competenceProfile[];
@@ -17,7 +17,6 @@ public class Bug
 	double startTime;
 	double endTime;
 	int algorithmicDeveloperAssignmentID=0;
-	
 	public int getAlgorithmicDeveloperAssignmentID() {
 		return algorithmicDeveloperAssignmentID;
 	}
