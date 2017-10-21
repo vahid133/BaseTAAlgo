@@ -11,7 +11,7 @@ public class Bug
 	double competenceProfile[];
 	int manualDeveloperID;
 	double totalEstimatedEffort;
-	double reportTime;
+	double arrivalTime;
 	HashMap<Zone, Double> BZone_Coefficient=new HashMap<Zone,Double>();
 	
 	double startTime;
