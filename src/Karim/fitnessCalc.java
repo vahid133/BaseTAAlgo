@@ -2,6 +2,7 @@ package Karim;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -108,12 +109,20 @@ Developer developer){
 		 i++;
 	 }*/
 	 
-	 
-
+	/* HashSet<Developer> developrs=new HashSet<Developer>();
+	 	for(Developer d:devs){
+	 		developrs.add(d);
+	 	}*/
+	 	
 		double IDFlow[][]=new double[devs.size()][devs.size()];
 		for(int i=0;i<IDFlow.length;i++){
 			for(int j=0;j<IDFlow[0].length;j++){
-				
+				if(devs.get(i)!=devs.get(j)){
+				;	
+				}
+				else{
+					IDFlow[i][j=0];
+				}
 			}
 			
 		}
