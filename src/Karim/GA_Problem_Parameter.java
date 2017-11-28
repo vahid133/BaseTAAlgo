@@ -4,6 +4,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
+import org.moeaframework.core.Solution;
+import org.jgrapht.graph.DirectedAcyclicGraph;
+import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.traverse.TopologicalOrderIterator;
+
+import java.util.Iterator;
+
+import org.apache.commons.math3.distribution.BinomialDistribution;
+
+import com.sun.scenario.effect.DelegateEffect;
+
 public class GA_Problem_Parameter {
 	static int Num_of_variables;
 	static int Num_of_functions;
@@ -21,7 +32,7 @@ public class GA_Problem_Parameter {
 	static HashMap<Integer,Developer> developers;
 	public static final int startDevId=1;
 	public static final int endDevId=20;
-	
+	public static double currentTimePeriodStartTime=0;
 	public static ArrayList<Integer> DevList=new ArrayList<Integer>();
 	public static ArrayList<Integer> DevList_forAssignment=new ArrayList<Integer>();
 	/*public void setNum_of_Variables(){
@@ -53,5 +64,25 @@ public class GA_Problem_Parameter {
 			return -1;
 		}	
 	}
-
+	
+	public static ArrayList<DefaultEdge> getValidSolution(ArrayList<DefaultEdge> edges, DirectedAcyclicGraph<Bug, DefaultEdge> DAG){
+		ArrayList<DefaultEdge> verifiedEadges=new ArrayList<DefaultEdge>();
+		DefaultEdge e=new DefaultEdge();
+		for(Iterator<DefaultEdge> iterator=edges.iterator();iterator.hasNext();){
+			e=(DefaultEdge) iterator.next().clone();
+			iterator.remove();
+			BinomialDistribution bd=new BinomialDistribution(1, 1);
+			if(Math.random()<0.50){
+				verifiedEadges.add(e);
+			}
+				
+			
+		}
+		
+		return new ArrayList<DefaultEdge>();
+	}
+	public static void update(ArrayList<DefaultEdge> edges, DefaultEdge e, DirectedAcyclicGraph<Bug,DefaultEdge> dag){
+		DefaultEdge e_reverse=new DefaultEdge(){};
+	}
+	
 }
