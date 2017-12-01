@@ -8,7 +8,7 @@ import org.moeaframework.core.Solution;
 import org.jgrapht.graph.DirectedAcyclicGraph;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.traverse.TopologicalOrderIterator;
-
+import org.jgrapht.alg.ConnectivityInspector;
 import java.util.Iterator;
 
 import org.apache.commons.math3.distribution.BinomialDistribution;
@@ -71,9 +71,9 @@ public class GA_Problem_Parameter {
 		for(Iterator<DefaultEdge> iterator=edges.iterator();iterator.hasNext();){
 			e=(DefaultEdge) iterator.next().clone();
 			iterator.remove();
-			BinomialDistribution bd=new BinomialDistribution(1, 1);
 			if(Math.random()<0.50){
 				verifiedEadges.add(e);
+				update(edges,e,DAG);
 			}
 				
 			
@@ -82,7 +82,17 @@ public class GA_Problem_Parameter {
 		return new ArrayList<DefaultEdge>();
 	}
 	public static void update(ArrayList<DefaultEdge> edges, DefaultEdge e, DirectedAcyclicGraph<Bug,DefaultEdge> dag){
-		DefaultEdge e_reverse=new DefaultEdge(){};
+		DefaultEdge e_reverse=dag.getEdge(dag.getEdgeTarget(e), dag.getEdgeSource(e));
+		edges.remove(e_reverse);
+		ConnectivityInspector<Bug, DefaultEdge> CI=new ConnectivityInspector<Bug, DefaultEdge>(dag);
+		for(DefaultEdge ed: edges){
+			if(CI.pathExists(dag.getEdgeSource(ed), dag.getEdgeSource(ed))){
+				edges.remove(dag.getEdge(dag.getEdgeTarget(ed), dag.getEdgeSource(ed)));
+				edges.remove(ed);
+			}
+		}
+		
+		
 	}
 	
 }
