@@ -121,7 +121,7 @@ Developer developer){
 				;	
 				}
 				else{
-					IDFlow[i][j=0];
+					IDFlow[i][j]=;
 				}
 			}
 			

@@ -10,7 +10,7 @@ import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.traverse.TopologicalOrderIterator;
 import org.jgrapht.alg.ConnectivityInspector;
 import java.util.Iterator;
-
+import java.lang.Object;
 import org.apache.commons.math3.distribution.BinomialDistribution;
 
 import com.sun.scenario.effect.DelegateEffect;
@@ -46,11 +46,13 @@ public class GA_Problem_Parameter {
 				DevList_forAssignment.add(dev);
 		}
 	}
+	
 	public static int getRandomDevId(){
 		Random rg=new Random();
 		int index=rg.nextInt(DevList.size());
 		return DevList.get(index);
 	}
+	
 	
 	public static int getDevId(){
 		if(DevList_forAssignment.size()>0){
@@ -65,6 +67,7 @@ public class GA_Problem_Parameter {
 		}	
 	}
 	
+	
 	public static ArrayList<DefaultEdge> getValidSolution(ArrayList<DefaultEdge> edges, DirectedAcyclicGraph<Bug, DefaultEdge> DAG){
 		ArrayList<DefaultEdge> verifiedEadges=new ArrayList<DefaultEdge>();
 		DefaultEdge e=new DefaultEdge();
@@ -75,12 +78,11 @@ public class GA_Problem_Parameter {
 				verifiedEadges.add(e);
 				update(edges,e,DAG);
 			}
-				
-			
 		}
-		
-		return new ArrayList<DefaultEdge>();
+		return verifiedEadges;
 	}
+	
+	
 	public static void update(ArrayList<DefaultEdge> edges, DefaultEdge e, DirectedAcyclicGraph<Bug,DefaultEdge> dag){
 		DefaultEdge e_reverse=dag.getEdge(dag.getEdgeTarget(e), dag.getEdgeSource(e));
 		edges.remove(e_reverse);
@@ -95,4 +97,18 @@ public class GA_Problem_Parameter {
 		
 	}
 	
+	public static DirectedAcyclicGraph<Bug, DefaultEdge> getDAGModel(ArrayList<Bug> bugs){
+		DirectedAcyclicGraph<Bug, DefaultEdge> dag=new DirectedAcyclicGraph<Bug, DefaultEdge>(new dependencyEdge());
+		
+		
+		
+		
+		return new DirectedAcyclicGraph<Bug, DefaultEdge>();
+	}
+	
+	public static ArrayuList<DefaultEdge>(ArrayList<Bug> bugs){
+	
+		
+		return 
+	}
 }
