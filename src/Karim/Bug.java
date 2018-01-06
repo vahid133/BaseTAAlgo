@@ -2,6 +2,10 @@ package Karim;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map.Entry;
+
+import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.DirectedAcyclicGraph;
 
 public class Bug 
 {
@@ -13,7 +17,7 @@ public class Bug
 	double totalEstimatedEffort;
 	double arrivalTime;
 	HashMap<Zone, Double> BZone_Coefficient=new HashMap<Zone,Double>();
-	
+	DirectedAcyclicGraph<Zone, DefaultEdge> Zone_DEP; 
 	double startTime;
 	double endTime;
 	int algorithmicDeveloperAssignmentID=0;
@@ -83,5 +87,20 @@ public class Bug
 
 	public void setTotalEstimatedEffort(double totalEstimatedEffort) {
 		this.totalEstimatedEffort = totalEstimatedEffort;
+	}
+	public void setZoneDEP(){
+		Class<? extends DefaultEdge> eclass=null;
+		Zone_DEP=new DirectedAcyclicGraph<Zone, DefaultEdge>(eclass);
+		for (Entry<Zone, Double>  zone:BZone_Coefficient.entrySet())
+		{
+			if(zone.getKey().DZ.size()>0){
+				for(Zone z:zone.getKey().DZ){
+					if(!Zone_DEP.containsEdge(z,zone.getKey()))
+						Zone_DEP.addEdge(z, zone.getKey());
+				}
+			}
+			else
+				Zone_DEP.addVertex(zone.getKey());
+		}
 	}
 }

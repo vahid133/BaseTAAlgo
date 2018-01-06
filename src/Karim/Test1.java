@@ -168,8 +168,10 @@ public class Test1 {
 							}
 							j++;
 						}
+					//create dag for zoneItems 	
+					bug.setZoneDEP();	
+					//add bug to bugset
 					bugs.put(bug.getID(), bug);
-					System.out.println(bug.ID+"----"+bug.BZone_Coefficient.values());
 					}
 					i++;
 					j=0;

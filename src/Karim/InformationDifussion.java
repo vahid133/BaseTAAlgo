@@ -6,6 +6,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.swing.text.GapContent;
+
+import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.DirectedAcyclicGraph;
+import org.jgrapht.traverse.TopologicalOrderIterator;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
@@ -17,6 +22,8 @@ import com.sun.org.apache.xpath.internal.operations.Variable;
 public class InformationDifussion extends AbstractProblem{
 	Bug[] bugs=GA_Problem_Parameter.bugs;
 	HashMap<Integer,Developer> developers=GA_Problem_Parameter.developers;
+	DirectedAcyclicGraph<Bug, DefaultEdge> DEP;
+	ArrayList<Zone> genes=new ArrayList<Zone>();
 	public InformationDifussion(){
 		super(GA_Problem_Parameter.Num_of_variables,GA_Problem_Parameter.Num_of_functions);
 		//this.bugs=bugs;
@@ -26,19 +33,35 @@ public class InformationDifussion extends AbstractProblem{
 	
 	@Override
 	public Solution newSolution(){
-		Solution solution=new Solution(GA_Problem_Parameter.Num_of_variables,GA_Problem_Parameter.Num_of_functions);
+		/*
+		 		
 		int j=0;
+		//change the code
 		for( int i=0;i<GA_Problem_Parameter.Num_of_variables;i++){
-			/*for(Map.Entry<Zone, Double>  zone:bugs[i].BZone_Coefficient.entrySet()){
-				RealVariable rv=new RealVariable(GA_Problem_Parameter.startDevId,GA_Problem_Parameter.startDevId);
-				rv.setValue(GA_Problem_Parameter.getDevId());*/
 				int randDevId=GA_Problem_Parameter.getRandomDevId();
 				
 				solution.setVariable(j,EncodingUtils.newInt(randDevId, randDevId));
 				
 				j++;
 			}
-			//}
+		
+		*/
+		TopologicalOrderIterator<Bug,DefaultEdge> tso=GA_Problem_Parameter.getTopologicalSorted(DEP);
+		int j=0;
+		while(tso.hasNext()){
+			Bug b=tso.next();
+			b.setZoneDEP();
+			TopologicalOrderIterator<Zone,DefaultEdge> tso_zones=new TopologicalOrderIterator<Zone, DefaultEdge>(b.Zone_DEP);
+			while(tso_zones.hasNext()){
+				genes.add(tso_zones.next());
+			}
+		}
+		//chnged num of variables for the soultuion
+		Solution solution=new Solution(genes.size(),GA_Problem_Parameter.Num_of_functions);
+		for(Zone z:genes){
+			int randDevId=GA_Problem_Parameter.getRandomDevId();
+			solution.setVariable(j,EncodingUtils.newInt(randDevId, randDevId));
+		}
 		return solution;
 	}
 		
@@ -47,6 +70,8 @@ public class InformationDifussion extends AbstractProblem{
 	public void evaluate(Solution solution){
 		double[] x = EncodingUtils.getReal(solution);
 		double f1 = 0.0;
+		double f1_1=0.0;
+		double f1_2=0.0;
 		double f2=0.0;
 		double f2_1 = 0.0;
 		double f2_2 = 0.0;
@@ -54,29 +79,17 @@ public class InformationDifussion extends AbstractProblem{
 		int numOfVar=0; 
 		for (int i = 0; i < GA_Problem_Parameter.Num_of_Bugs; i++) {
 			 for(Map.Entry<Zone, Double>  zone:bugs[i].BZone_Coefficient.entrySet()){
-				f1+=fitnessCalc.completionTime(bugs[i],zone, developers.get(EncodingUtils.getInt(solution.getVariable(numOfVar))))
-						*developers.get(EncodingUtils.getInt(solution.getVariable(numOfVar))).getDZone_Wage().get(zone.getKey());;
+				f1_1+=fitnessCalc.completionTime(bugs[i],zone, developers.get(EncodingUtils.getInt(solution.getVariable(numOfVar))))
+						*developers.get(EncodingUtils.getInt(solution.getVariable(numOfVar))).getDZone_Wage().get(zone.getKey());
 						numOfVar++;
+				f1_2+=fitnessCalc.getDelayTime(bugs[i], zone, developers.get(EncodingUtils.getInt(solution.getVariable(numOfVar))))*GA_Problem_Parameter.delayPenaltyCostRate;		
+				developers.get(EncodingUtils.getInt(solution.getVariable(numOfVar))).developerNextAvailableHour+=fitnessCalc.completionTime(bugs[i],zone, developers.get(EncodingUtils.getInt(solution.getVariable(numOfVar))));
 			 }
-			bugs[i].endTime=f1+bugs[i].startTime;
+			 f1=f1_1+f1_2;
 		 }
 		
-		//compute zone dissimilarity
 		
-		
-		/*
-		numOfVar=0;
-		 for (int i = 0; i < GA_Problem_Parameter.Num_of_Bugs; i++) {
-			 if(i>0)
-				 numOfVar+=bugs[i-1].BZone_Coefficient.size();
-			 for(int j=0;j<bugs[i].BZone_Coefficient.size();j++){
-					for(int k=j+1;k<bugs[i].BZone_Coefficient.size();k++)
-						f2_1+=fitnessCalc.getSimDev(developers.get(EncodingUtils.getInt(solution.getVariable(numOfVar+j))),
-												  developers.get(EncodingUtils.getInt(solution.getVariable(numOfVar+k))));
-					
-			 }
-		 }*/
-		
+		//compute the infomration difuusion
 		numOfVar=0;
 		 ArrayList<Developer> devs=new ArrayList<Developer>();
 		 for (int i = 0; i < GA_Problem_Parameter.Num_of_Bugs; i++) {
@@ -85,7 +98,7 @@ public class InformationDifussion extends AbstractProblem{
 				 devs.add(developers.get(EncodingUtils.getInt(solution.getVariable(numOfVar))));
 				 numOfVar++;
 			 }
-			 f2_1+=fitnessCalc.getDataFlow(bugs[i].BZone_Coefficient, devs);
+			 f2_1+=fitnessCalc.getDataFlow(bugs[i], devs);
 		 }
 		
 		
@@ -108,4 +121,7 @@ public class InformationDifussion extends AbstractProblem{
 		
 		 }
 
+	public void generateDAG(){
+		DEP=GA_Problem_Parameter.getDAGModel(bugs);
+	}
 }

@@ -36,7 +36,7 @@ Developer developer){
 			bug.startTime=Math.max(bug.startTime, bug.DB.get(j).endTime);
 	}
 	
-	return Math.max(zone.getKey().zoneStartTime, bug.startTime);
+	return zone.getKey().zoneStartTime+ bug.startTime;
 }
 
  public static double getSimDev(Developer d1, Developer d2){
@@ -65,6 +65,8 @@ Developer developer){
 		}
  }
  
+ 
+ 
  public static double getTZoneSim(HashMap<Zone, Double> bugZone, ArrayList<Developer> devs){
 	 HashMap<Zone, Double> devsUnionZone=new HashMap<Zone, Double>();
 	 double tZoneSim=0;
@@ -85,7 +87,8 @@ Developer developer){
 	
  }
  
- public static double getDataFlow(HashMap<Zone, Double> bugZone, ArrayList<Developer> devs){
+ 
+ public static double getDataFlow(Bug bug, ArrayList<Developer> devs){
 	 double dev_bugZone_sim=0;
 	 double dev_not_assigned_sim=0;
 	 double dataFlow=0;
@@ -118,16 +121,16 @@ Developer developer){
 		for(int i=0;i<IDFlow.length;i++){
 			for(int j=0;j<IDFlow[0].length;j++){
 				if(devs.get(i)!=devs.get(j)){
-				;	
+					IDFlow[i][j]=getD
 				}
 				else{
-					IDFlow[i][j]=;
+					IDFlow[i][j]=0;
 				}
 			}
 			
 		}
 		
-	return (dev_bugZone_sim/bugZone.size())+(dev_not_assigned_sim/devs.size());
+	return 0; //(dev_bugZone_sim/bugZone.size())+(dev_not_assigned_sim/devs.size());
 	
 	
 	
@@ -135,8 +138,14 @@ Developer developer){
 	 
  }
  
+ public static double getFlowD2D(Bug b, ArrayList<Developer> devs){
+	 // implement (Zi-Zj) and (all zones) 
+	 HashMap<Zone, Double> DevsDiff=new HashMap<Zone, Double>();
+	 
+ }
  public static double getNotAssignedTaskCost(){
 	 return 0;
  }
+ 
 }
 

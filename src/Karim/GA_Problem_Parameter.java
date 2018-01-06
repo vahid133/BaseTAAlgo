@@ -4,13 +4,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
+import org.moeaframework.algorithm.DBEA;
 import org.moeaframework.core.Solution;
 import org.jgrapht.graph.DirectedAcyclicGraph;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.traverse.TopologicalOrderIterator;
 import org.jgrapht.alg.ConnectivityInspector;
+
 import java.util.Iterator;
 import java.lang.Object;
+
 import org.apache.commons.math3.distribution.BinomialDistribution;
 
 import com.sun.scenario.effect.DelegateEffect;
@@ -27,11 +30,13 @@ public class GA_Problem_Parameter {
 	static double sbx_distribution_index;
 	static double pm_rate;
 	static double pm_distribution_index;
+	static double delayPenaltyCostRate=0.33;
 	//
 	static Bug[] bugs;
 	static HashMap<Integer,Developer> developers;
 	public static final int startDevId=1;
 	public static final int endDevId=20;
+	private static final Class<? extends DefaultEdge> EClass = null;
 	public static double currentTimePeriodStartTime=0;
 	public static ArrayList<Integer> DevList=new ArrayList<Integer>();
 	public static ArrayList<Integer> DevList_forAssignment=new ArrayList<Integer>();
@@ -97,18 +102,29 @@ public class GA_Problem_Parameter {
 		
 	}
 	
-	public static DirectedAcyclicGraph<Bug, DefaultEdge> getDAGModel(ArrayList<Bug> bugs){
-		DirectedAcyclicGraph<Bug, DefaultEdge> dag=new DirectedAcyclicGraph<Bug, DefaultEdge>(new dependencyEdge());
-		
-		
-		
-		
-		return new DirectedAcyclicGraph<Bug, DefaultEdge>();
+	public static DirectedAcyclicGraph<Bug, DefaultEdge> getDAGModel(Bug[] bugs){
+		DirectedAcyclicGraph<Bug, DefaultEdge> dag=new DirectedAcyclicGraph<Bug, DefaultEdge>(EClass);
+		for(int i=0;i<bugs.length;i++){
+			if(bugs[i].DB.size()>0){
+				for(Bug b:bugs[i].DB){
+					if(!dag.containsEdge(bugs[i],b))
+						dag.addEdge(b,bugs[i]);
+				}
+			}
+			else{
+				dag.addVertex(bugs[i]);
+			}
+		}
+		return dag;
 	}
 	
-	public static ArrayuList<DefaultEdge>(ArrayList<Bug> bugs){
+	public static ArrayList<DefaultEdge> getEdges(ArrayList<Bug> tasks){
 	
-		
-		return 
+		return new ArrayList<DefaultEdge>();
+	}
+	
+
+	public static TopologicalOrderIterator<Bug, DefaultEdge> getTopologicalSorted(DirectedAcyclicGraph<Bug, DefaultEdge> dag){
+		return new TopologicalOrderIterator<Bug, DefaultEdge>(dag);
 	}
 }
