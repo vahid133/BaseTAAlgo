@@ -23,7 +23,7 @@ public class Developer
 	}
 
 	
-	public int getDeveloperNextAvailableHour() {
+	public double getDeveloperNextAvailableHour() {
 		return developerNextAvailableHour;
 	}
 

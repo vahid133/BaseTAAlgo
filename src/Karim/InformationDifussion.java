@@ -1,5 +1,6 @@
 package Karim;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -23,6 +24,7 @@ public class InformationDifussion extends AbstractProblem{
 	Bug[] bugs=GA_Problem_Parameter.bugs;
 	HashMap<Integer,Developer> developers=GA_Problem_Parameter.developers;
 	DirectedAcyclicGraph<Bug, DefaultEdge> DEP;
+	TopologicalOrderIterator<Bug,DefaultEdge> tso;
 	ArrayList<Zone> genes=new ArrayList<Zone>();
 	public InformationDifussion(){
 		super(GA_Problem_Parameter.Num_of_variables,GA_Problem_Parameter.Num_of_functions);
@@ -46,7 +48,9 @@ public class InformationDifussion extends AbstractProblem{
 			}
 		
 		*/
-		TopologicalOrderIterator<Bug,DefaultEdge> tso=GA_Problem_Parameter.getTopologicalSorted(DEP);
+		
+		DEP=GA_Problem_Parameter.getDAGModel(bugs);
+		tso=GA_Problem_Parameter.getTopologicalSorted(DEP);
 		int j=0;
 		while(tso.hasNext()){
 			Bug b=tso.next();
@@ -77,13 +81,21 @@ public class InformationDifussion extends AbstractProblem{
 		double f2_2 = 0.0;
 		
 		int numOfVar=0; 
-		for (int i = 0; i < GA_Problem_Parameter.Num_of_Bugs; i++) {
-			 for(Map.Entry<Zone, Double>  zone:bugs[i].BZone_Coefficient.entrySet()){
-				f1_1+=fitnessCalc.completionTime(bugs[i],zone, developers.get(EncodingUtils.getInt(solution.getVariable(numOfVar))))
+		Bug b;
+		DirectedAcyclicGraph<Bug, DefaultEdge> DEP_evaluation=(DirectedAcyclicGraph<Bug, DefaultEdge>) DEP.clone();
+		while(tso.hasNext()) {
+			b=tso.next();
+			 for(Zone  zone_bug:b.Zone_DEP){
+				Entry<Zone, Double> zone=new AbstractMap.SimpleEntry<Zone, Double>(zone_bug,b.BZone_Coefficient.get(zone_bug));
+				f1_1+=fitnessCalc.completionTime(b,zone, developers.get(EncodingUtils.getInt(solution.getVariable(numOfVar))))
 						*developers.get(EncodingUtils.getInt(solution.getVariable(numOfVar))).getDZone_Wage().get(zone.getKey());
 						numOfVar++;
-				f1_2+=fitnessCalc.getDelayTime(bugs[i], zone, developers.get(EncodingUtils.getInt(solution.getVariable(numOfVar))))*GA_Problem_Parameter.delayPenaltyCostRate;		
-				developers.get(EncodingUtils.getInt(solution.getVariable(numOfVar))).developerNextAvailableHour+=fitnessCalc.completionTime(bugs[i],zone, developers.get(EncodingUtils.getInt(solution.getVariable(numOfVar))));
+				f1_2+=fitnessCalc.getDelayTime(b, zone, developers.get(EncodingUtils.getInt(solution.getVariable(numOfVar))))*GA_Problem_Parameter.delayPenaltyCostRate;		
+				
+				//update developer nextAvailableHours
+				developers.get(EncodingUtils.getInt(solution.getVariable(numOfVar))).developerNextAvailableHour+=fitnessCalc.getDelayTime(b, zone, developers.get(EncodingUtils.getInt(solution.getVariable(numOfVar))))
+																												+fitnessCalc.completionTime(b,zone, developers.get(EncodingUtils.getInt(solution.getVariable(numOfVar))));
+				b.
 			 }
 			 f1=f1_1+f1_2;
 		 }
