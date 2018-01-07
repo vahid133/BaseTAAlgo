@@ -225,10 +225,9 @@ public class Test1 {
 				i++;
 			}
 		}
+		/* end setting bug dependencies*/
 		
-		//sc1.close();
-		//sc.close();
-		/* set competency dependencies*/
+		/* set zone dependencies*/
 		
 		
 		

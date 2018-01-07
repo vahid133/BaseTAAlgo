@@ -13,18 +13,21 @@ import com.sun.xml.internal.bind.v2.model.core.ID;
 public class fitnessCalc {
 
 
-public static double completionTime(Bug bug, Entry<Zone, Double> zone,
-		Developer developer) {	
+public static double compeletionTime(Bug bug, Entry<Zone, Double> zone, Developer developer) {	
 	//compute total time for competency 
 	double tct=bug.getTotalEstimatedEffort()*bug.BZone_Coefficient.get(zone.getKey())/((developer.getDZone_Coefficient().get(zone.getKey()))+1);
 	return tct;
 }
+
+
 
 public static double getDelayTime(Bug bug, Entry<Zone, Double> zone,
 		Developer developer){
 	double delayTime=Math.max(taskDependencyDelayTime(bug, zone, developer), developer.developerNextAvailableHour);
 	return delayTime;
 }
+
+
 
 public static double taskDependencyDelayTime(Bug bug, Entry<Zone, Double> zone,
 Developer developer){
@@ -39,6 +42,9 @@ Developer developer){
 	return zone.getKey().zoneStartTime+ bug.startTime;
 }
 
+
+
+
  public static double getSimDev(Developer d1, Developer d2){
 	 double DDSim_intersection=0.0;
 	 double DDSim_union=0.0;
@@ -50,6 +56,8 @@ Developer developer){
 	 return 1/(DDSim_intersection/DDSim_union);
  }
  
+ 
+ 
  public static double getSimBug(Developer d1,Bug b2, Zone z1){
 	 double DBSim=0.0;
 	 //for (Entry<Zone, Double>  zone:b2.BZone_Coefficient.entrySet())
@@ -58,6 +66,8 @@ Developer developer){
 	 return DBSim;
  }
 
+ 
+ 
  public static void setBugEndTime(Bug bug){
 	 for(int j=0;j<bug.DB.size();j++){
 			if(bug.endTime>bug.startTime)
@@ -86,6 +96,7 @@ Developer developer){
 	return tZoneSim/bugZone.size();
 	
  }
+ 
  
  
  public static double getDataFlow(Bug bug, ArrayList<Developer> devs){
