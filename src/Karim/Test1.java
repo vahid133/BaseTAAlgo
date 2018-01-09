@@ -230,6 +230,7 @@ public class Test1 {
 		/* set zone dependencies*/
 		
 		
+		/* end setting zone dependencies*/
 		
 		//initialize GA parameters
 		GA_Problem_Parameter.Num_of_variables=bugs.size();

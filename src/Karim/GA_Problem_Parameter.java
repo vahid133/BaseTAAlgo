@@ -73,10 +73,12 @@ public class GA_Problem_Parameter {
 	}
 	
 	
-	public static ArrayList<DefaultEdge> getValidSolution(ArrayList<DefaultEdge> edges, DirectedAcyclicGraph<Bug, DefaultEdge> DAG){
+	public static ArrayList<DefaultEdge> getValidScheduling(ArrayList<DefaultEdge> edges, DirectedAcyclicGraph<Bug, DefaultEdge> DAG){
+		ArrayList<DefaultEdge> edges_complemet;
 		ArrayList<DefaultEdge> verifiedEadges=new ArrayList<DefaultEdge>();
 		DefaultEdge e=new DefaultEdge();
-		for(Iterator<DefaultEdge> iterator=edges.iterator();iterator.hasNext();){
+		Iterator<DefaultEdge> iterator=edges.iterator();
+		while(iterator.hasNext()){
 			e=(DefaultEdge) iterator.next().clone();
 			iterator.remove();
 			if(Math.random()<0.50){
@@ -86,6 +88,7 @@ public class GA_Problem_Parameter {
 		}
 		return verifiedEadges;
 	}
+	
 	
 	
 	public static void update(ArrayList<DefaultEdge> edges, DefaultEdge e, DirectedAcyclicGraph<Bug,DefaultEdge> dag){
@@ -98,8 +101,6 @@ public class GA_Problem_Parameter {
 				edges.remove(ed);
 			}
 		}
-		
-		
 	}
 	
 	public static DirectedAcyclicGraph<Bug, DefaultEdge> getDAGModel(Bug[] bugs){

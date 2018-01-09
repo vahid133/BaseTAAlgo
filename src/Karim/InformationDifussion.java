@@ -93,7 +93,8 @@ public class InformationDifussion extends AbstractProblem{
 				compeletionTime=fitnessCalc.compeletionTime(b,zone, developers.get(EncodingUtils.getInt(solution.getVariable(numOfVar))));
 				f1_1+=compeletionTime*developers.get(EncodingUtils.getInt(solution.getVariable(numOfVar))).getDZone_Wage().get(zone.getKey());
 						numOfVar++;
-				f1_2+=fitnessCalc.getDelayTime(b, zone, developers.get(EncodingUtils.getInt(solution.getVariable(numOfVar))))*GA_Problem_Parameter.delayPenaltyCostRate;		
+						delayTime=fitnessCalc.getDelayTime(b, zone, developers.get(EncodingUtils.getInt(solution.getVariable(numOfVar))));
+				f1_2+=delayTime*GA_Problem_Parameter.delayPenaltyCostRate;		
 				
 				//update developer nextAvailableHours
 				developers.get(EncodingUtils.getInt(solution.getVariable(numOfVar))).developerNextAvailableHour+=fitnessCalc.getDelayTime(b, zone, developers.get(EncodingUtils.getInt(solution.getVariable(numOfVar))));

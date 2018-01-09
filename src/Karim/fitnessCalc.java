@@ -132,7 +132,7 @@ Developer developer){
 		for(int i=0;i<IDFlow.length;i++){
 			for(int j=0;j<IDFlow[0].length;j++){
 				if(devs.get(i)!=devs.get(j)){
-					IDFlow[i][j]=getD
+					IDFlow[i][j]=getFlowD2D(bug, devs);
 				}
 				else{
 					IDFlow[i][j]=0;
