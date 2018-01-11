@@ -87,6 +87,12 @@ public class GA_Problem_Parameter {
 			}
 		}
 		ArrayList<DefaultEdge> verifiedEadges=new ArrayList<DefaultEdge>();
+		//find all permutation of potentialEdges list
+		for(int i=0;i<Math.){
+			
+		}
+		
+		
 		
 		DefaultEdge e=new DefaultEdge();
 		Iterator<DefaultEdge> iterator=potentilEdges.iterator();
