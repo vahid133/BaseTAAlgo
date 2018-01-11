@@ -73,18 +73,30 @@ public class GA_Problem_Parameter {
 	}
 	
 	
-	public static ArrayList<DefaultEdge> getValidScheduling(ArrayList<DefaultEdge> edges, DirectedAcyclicGraph<Bug, DefaultEdge> DAG){
-		ArrayList<DefaultEdge> edges_complemet;
+	public static ArrayList<DefaultEdge> getValidScheduling(DirectedAcyclicGraph<Bug, DefaultEdge> DAG){
+		@SuppressWarnings("unchecked")
+		DirectedAcyclicGraph<Bug, DefaultEdge> DAG_2=(DirectedAcyclicGraph<Bug, DefaultEdge>) DAG.clone();
+		ArrayList<DefaultEdge> potentilEdges=new ArrayList<DefaultEdge>();
+		ConnectivityInspector<Bug,DefaultEdge> CI=new ConnectivityInspector<Bug, DefaultEdge>(DAG);
+		for(Bug b1:DAG_2.vertexSet()){
+			for(Bug b2:DAG_2.vertexSet()){
+				if(b1!=b2 && !CI.pathExists(b1, b2) && CI.pathExists(b2, b1)){
+					potentilEdges.add(DAG_2.addEdge(b1,b2));
+					potentilEdges.add(DAG_2.addEdge(b2,b1));
+				}
+			}
+		}
 		ArrayList<DefaultEdge> verifiedEadges=new ArrayList<DefaultEdge>();
+		
 		DefaultEdge e=new DefaultEdge();
-		Iterator<DefaultEdge> iterator=edges.iterator();
+		Iterator<DefaultEdge> iterator=potentilEdges.iterator();
 		while(iterator.hasNext()){
 			e=(DefaultEdge) iterator.next().clone();
 			iterator.remove();
-			if(Math.random()<0.50){
+			//if(Math.random()<0.50){
 				verifiedEadges.add(e);
-				update(edges,e,DAG);
-			}
+				update(potentilEdges,e,DAG_2);
+			//}
 		}
 		return verifiedEadges;
 	}
