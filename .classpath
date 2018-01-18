@@ -12,6 +12,12 @@
 	<classpathentry kind="lib" path="lib/JMetal-4.3.jar"/>
 	<classpathentry kind="lib" path="lib/rsyntaxtextarea.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+<<<<<<< HEAD
 	<classpathentry kind="lib" path="C:/Users/pc/git/BaseTAAlgo/lib/jgrapht-ext-1.1.0-uber.jar"/>
+=======
+	<classpathentry kind="lib" path="C:/Users/DistLab3/java project/BaseTAAlgo/lib/jgrapht-ext-1.1.0-uber.jar"/>
+	<classpathentry kind="lib" path="C:/Users/DistLab3/java project/BaseTAAlgo/lib/guava.jar"/>
+	<classpathentry kind="lib" path="C:/Users/DistLab3/java project/BaseTAAlgo/lib/combinatoricslib-2.0.jar"/>
+>>>>>>> 77f243051f09e1c5435e2a43c857d292855b5999
 	<classpathentry kind="output" path="bin"/>
 </classpath>
