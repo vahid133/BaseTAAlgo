@@ -3,20 +3,18 @@ package Karim;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
-
 import org.moeaframework.algorithm.DBEA;
 import org.moeaframework.core.Solution;
 import org.jgrapht.graph.DirectedAcyclicGraph;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.traverse.TopologicalOrderIterator;
 import org.jgrapht.alg.ConnectivityInspector;
-
 import java.util.Iterator;
 import java.lang.Object;
-
 import org.apache.commons.math3.distribution.BinomialDistribution;
-
 import com.sun.scenario.effect.DelegateEffect;
+import com.google.common.collect.Collections2;
+
 
 public class GA_Problem_Parameter {
 	static int Num_of_variables;
@@ -87,8 +85,10 @@ public class GA_Problem_Parameter {
 			}
 		}
 		ArrayList<DefaultEdge> verifiedEadges=new ArrayList<DefaultEdge>();
+		
 		//find all permutation of potentialEdges list
-		for(int i=0;i<Math.){
+		ArrayList<ArrayList<DefaultEdge>> potenailEdge=Collections2.
+		for(int i=0;i<){
 			
 		}
 		
